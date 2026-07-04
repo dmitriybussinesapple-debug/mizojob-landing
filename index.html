@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FF5E3A">
+<title>MizoJob — Работа мечты в твоём Telegram</title>
+<meta name="description" content="MizoJob — сервис поиска работы прямо в Telegram. Свежие вакансии каждый день: удалёнка, редактура, СММ, переводы и многое другое.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --coral:#FF7A59;
+  --coral-deep:#FF5E3A;
+  --peach:#FFC29A;
+  --chrome:#E9EDF2;
+  --ink:#1c0e0a;
+  --cream:#FFF6EF;
+  --white:#ffffff;
+
+  --grad-coral:linear-gradient(135deg,#FF7A59 0%,#FF5E3A 100%);
+  --grad-warm:linear-gradient(135deg,#FFC29A 0%,#FF7A59 55%,#FF5E3A 100%);
+
+  --glass-bg:linear-gradient(150deg,rgba(255,122,89,.22),rgba(255,94,58,.10));
+  --glass-border:rgba(255,255,255,.55);
+  --glass-shadow:0 20px 50px -18px rgba(255,94,58,.45);
+
+  --radius:22px;
+  --radius-lg:32px;
+  --maxw:1160px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+/* ============ RESET / BASE ============ */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:'Manrope',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  color:var(--ink);
+  background:var(--cream);
+  line-height:1.6;
+  font-weight:400;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:'Space Grotesk',sans-serif;font-weight:700;line-height:1.05;margin:0;letter-spacing:-.02em}
+p{margin:0}
+button{font-family:inherit}
+
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:20px}
+
+.text-grad{
+  background:var(--grad-coral);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+
+/* ============ BUTTONS ============ */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  font-weight:700;font-size:1rem;
+  padding:15px 28px;border:0;border-radius:999px;cursor:pointer;
+  color:#fff;background:var(--grad-coral);
+  box-shadow:0 14px 30px -10px rgba(255,94,58,.65);
+  transition:transform .35s var(--ease),box-shadow .35s var(--ease),filter .35s var(--ease);
+  will-change:transform;
+}
+.btn:hover{transform:translateY(-4px);box-shadow:0 22px 44px -12px rgba(255,94,58,.8);filter:saturate(1.08)}
+.btn:active{transform:translateY(-1px)}
+.btn svg{width:20px;height:20px;flex:none}
+.btn-ghost{
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.35);
+  box-shadow:none;color:#fff;backdrop-filter:blur(8px);
+}
+.btn-ghost:hover{background:rgba(255,255,255,.24)}
+
+/* ============ SECTION SHELL ============ */
+.section{padding:96px 0;position:relative}
+.section__head{text-align:center;max-width:640px;margin:0 auto 54px}
+.section__head h2{font-size:clamp(1.9rem,5vw,3rem)}
+.section__head p{margin-top:14px;color:#6b4a3d;font-size:1.05rem}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-weight:700;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--coral-deep);
+}
+.eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--coral-deep);box-shadow:0 0 0 4px rgba(255,94,58,.18)}
+
+/* ============ REVEAL ============ */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+[data-delay="1"]{transition-delay:.12s}
+[data-delay="2"]{transition-delay:.24s}
+[data-delay="3"]{transition-delay:.36s}
+[data-delay="4"]{transition-delay:.48s}
+
+/* ============ TOP NAV ============ */
+.nav{
+  position:absolute;top:0;left:0;right:0;z-index:20;
+  padding:22px 0;
+}
+.nav__inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Space Grotesk';font-weight:700;font-size:1.25rem;color:#fff;letter-spacing:-.01em}
+.logo .diamond{color:var(--peach);font-size:1.1rem;filter:drop-shadow(0 2px 6px rgba(255,94,58,.6))}
+.lang{
+  display:flex;align-items:center;gap:2px;padding:5px;border-radius:999px;
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
+  backdrop-filter:blur(10px);
+}
+.lang button{
+  border:0;background:transparent;color:rgba(255,255,255,.75);
+  font-weight:600;font-size:.82rem;padding:6px 12px;border-radius:999px;cursor:pointer;
+  transition:background .25s,color .25s;
+}
+.lang button.active{background:#fff;color:var(--coral-deep)}
+
+/* ============ HERO ============ */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;isolation:isolate}
+.hero__media{position:absolute;inset:0;z-index:-3;background:var(--grad-warm)}
+.hero__media video{width:100%;height:100%;object-fit:cover;filter:saturate(1.1)}
+/* animated gradient fallback (shows if video fails / absent) */
+.hero__fallback{
+  position:absolute;inset:0;z-index:-2;
+  background:linear-gradient(120deg,#FFC29A,#FF7A59,#FF5E3A,#FFC29A);
+  background-size:300% 300%;
+  animation:heroGrad 14s ease infinite;
+  opacity:0;transition:opacity .4s;
+}
+.hero__fallback.show{opacity:1}
+@keyframes heroGrad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+/* left scrim for readability */
+.hero__scrim{
+  position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg,rgba(28,14,10,.72) 0%,rgba(28,14,10,.42) 42%,rgba(28,14,10,.05) 78%,transparent 100%);
+}
+.hero__inner{position:relative;padding-top:120px;padding-bottom:80px;max-width:660px}
+.hero h1{font-size:clamp(2.5rem,7.5vw,4.6rem);color:#fff;margin:18px 0 0}
+.hero__sub{color:rgba(255,255,255,.9);font-size:clamp(1.05rem,2.4vw,1.28rem);margin-top:22px;max-width:520px}
+.hero__cta{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap}
+.hero .eyebrow{color:#fff}
+.hero .eyebrow .dot{background:var(--peach);box-shadow:0 0 0 4px rgba(255,194,154,.25)}
+.hero__scrolls{
+  position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+  color:rgba(255,255,255,.8);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
+  display:flex;flex-direction:column;align-items:center;gap:8px;z-index:5;
+}
+.hero__scrolls .mouse{width:24px;height:38px;border:2px solid rgba(255,255,255,.6);border-radius:14px;position:relative}
+.hero__scrolls .mouse::after{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:4px;height:7px;border-radius:2px;background:#fff;animation:scrollDot 1.6s var(--ease) infinite}
+@keyframes scrollDot{0%{opacity:0;transform:translate(-50%,0)}40%{opacity:1}80%{opacity:0;transform:translate(-50%,12px)}100%{opacity:0}}
+
+/* ============ STATS ============ */
+.stats{background:var(--white)}
+.stats__grid{display:grid;gap:22px;grid-template-columns:1fr}
+.stat{
+  position:relative;overflow:hidden;
+  padding:38px 30px;border-radius:var(--radius-lg);
+  background:var(--glass-bg);
+  border:1px solid var(--glass-border);
+  box-shadow:var(--glass-shadow);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  text-align:center;
+}
+.stat::before{content:"";position:absolute;top:-40%;right:-30%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.5),transparent 70%);pointer-events:none}
+.stat__num{font-family:'Space Grotesk';font-weight:700;font-size:clamp(2.6rem,7vw,3.4rem);line-height:1;color:var(--coral-deep)}
+.stat__num .plus{color:var(--coral)}
+.stat__label{margin-top:12px;font-weight:600;color:#7a4f3f;font-size:1.02rem}
+
+/* ============ VACANCIES (sticky zoom) ============ */
+.vac{background:linear-gradient(180deg,#fff 0%,var(--cream) 100%)}
+.vac__track{position:relative;height:280vh}         /* tall scroll area */
+.vac__sticky{position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:70px 0}
+.vac__cards{
+  display:grid;gap:22px;grid-template-columns:1fr;max-width:1080px;margin:40px auto 0;width:100%;
+}
+.vcard{
+  position:relative;overflow:hidden;
+  padding:30px 28px;border-radius:var(--radius-lg);
+  background:var(--glass-bg);
+  border:1px solid var(--glass-border);
+  box-shadow:var(--glass-shadow);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  transform:scale(.8);opacity:.25;
+  transition:transform .2s linear,opacity .2s linear,box-shadow .35s var(--ease);
+  will-change:transform,opacity;
+}
+.vcard::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(160deg,rgba(255,255,255,.35),transparent 55%);pointer-events:none}
+.vcard__icon{font-size:2.1rem;width:62px;height:62px;display:grid;place-items:center;border-radius:18px;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6)}
+.vcard h3{font-size:1.4rem;margin-top:18px;color:var(--ink)}
+.vcard__desc{margin-top:10px;color:#6b4a3d;font-size:.98rem}
+.vcard__meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.tag{
+  font-weight:600;font-size:.82rem;padding:6px 13px;border-radius:999px;
+  background:rgba(255,94,58,.12);color:var(--coral-deep);border:1px solid rgba(255,94,58,.22);
+}
+.tag--pay{background:var(--grad-coral);color:#fff;border-color:transparent}
+.vac__foot{text-align:center;margin-top:44px}
+
+/* ============ BOTTOM CTA ============ */
+.cta{position:relative;overflow:hidden;isolation:isolate;color:#fff;padding:110px 0}
+.cta__media{position:absolute;inset:0;z-index:-3;background:var(--grad-coral)}
+.cta__media video{width:100%;height:100%;object-fit:cover;filter:saturate(1.1)}
+.cta__fallback{position:absolute;inset:0;z-index:-2;background:linear-gradient(130deg,#FF5E3A,#FF7A59,#FFC29A,#FF5E3A);background-size:300% 300%;animation:heroGrad 14s ease infinite;opacity:0;transition:opacity .4s}
+.cta__fallback.show{opacity:1}
+.cta__scrim{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(28,14,10,.66),rgba(28,14,10,.35) 55%,rgba(28,14,10,.15))}
+.cta__grid{display:grid;gap:48px;grid-template-columns:1fr;align-items:center}
+.cta h2{font-size:clamp(2rem,6vw,3.4rem);max-width:12ch}
+.cta__sub{margin-top:18px;color:rgba(255,255,255,.9);font-size:1.1rem;max-width:44ch}
+.cta__btn{margin-top:30px}
+
+/* phone mockup */
+.phone-wrap{display:flex;justify-content:center}
+.phone{
+  position:relative;width:270px;aspect-ratio:9/19;
+  border-radius:42px;padding:12px;
+  background:linear-gradient(160deg,#2a1712,#140a07);
+  box-shadow:0 40px 80px -24px rgba(20,8,4,.7),inset 0 0 0 2px rgba(255,255,255,.08);
+  animation:float 5.5s ease-in-out infinite;
+}
+.phone::before{content:"";position:absolute;top:14px;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#140a07;border-radius:0 0 16px 16px;z-index:3}
+.phone__screen{width:100%;height:100%;border-radius:32px;overflow:hidden;background:var(--cream);position:relative}
+.phone__screen img{width:100%;height:100%;object-fit:cover}
+.phone__placeholder{
+  position:absolute;inset:0;display:flex;flex-direction:column;gap:14px;padding:52px 16px 16px;
+  background:linear-gradient(180deg,#FFF6EF,#FFE7D8);
+}
+.ph-bubble{background:#fff;border-radius:16px 16px 16px 4px;padding:12px 14px;box-shadow:0 6px 18px -8px rgba(255,94,58,.4);max-width:82%}
+.ph-bubble.me{align-self:flex-end;border-radius:16px 16px 4px 16px;background:var(--grad-coral);color:#fff}
+.ph-bubble b{font-family:'Space Grotesk';display:block;color:var(--coral-deep);font-size:.8rem;margin-bottom:2px}
+.ph-bubble.me b{color:#fff}
+.ph-bubble span{font-size:.82rem;color:#6b4a3d;line-height:1.4}
+.ph-bubble.me span{color:#fff}
+.ph-head{position:absolute;top:36px;left:0;right:0;text-align:center;font-family:'Space Grotesk';font-weight:700;color:var(--ink);font-size:.9rem;z-index:2}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+
+/* ============ FOOTER ============ */
+.footer{background:var(--ink);color:#fff;padding:56px 0 40px}
+.footer__grid{display:flex;flex-direction:column;gap:22px}
+.footer .logo{color:#fff}
+.footer__about{color:rgba(255,255,255,.6);max-width:38ch;font-size:.96rem}
+.footer__link{display:inline-flex;align-items:center;gap:8px;color:var(--peach);font-weight:600}
+.footer__link:hover{color:#fff}
+.footer__bottom{margin-top:34px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);font-size:.85rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+/* ============ RESPONSIVE ============ */
+@media(min-width:720px){
+  .stats__grid{grid-template-columns:repeat(3,1fr)}
+  .vac__cards{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:900px){
+  .cta__grid{grid-template-columns:1.1fr .9fr}
+}
+
+/* card hover only where pointer is fine (avoids clash with zoom transform on touch) */
+@media(hover:hover) and (pointer:fine){
+  .stat{transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+  .stat:hover{transform:translateY(-8px);box-shadow:0 30px 60px -18px rgba(255,94,58,.55)}
+}
+
+/* ============ REDUCED MOTION ============ */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important;
+  }
+  .reveal{opacity:1!important;transform:none!important}
+  .vcard{transform:none!important;opacity:1!important}
+  .phone{animation:none!important}
+  .hero__scrolls{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="hero__media">
+    <video autoplay muted loop playsinline poster="video2-poster.jpg" id="heroVideo">
+      <source src="video2.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero__fallback" id="heroFallback"></div>
+  <div class="hero__scrim"></div>
+
+  <nav class="nav">
+    <div class="wrap nav__inner">
+      <a class="logo" href="#top"><span class="diamond">◆</span> MizoJob</a>
+      <div class="lang" role="group" aria-label="Язык">
+        <button class="active" type="button">RU</button>
+        <button type="button">UA</button>
+        <button type="button">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <div class="hero__inner">
+      <span class="eyebrow reveal"><span class="dot"></span>Свежие вакансии каждый день</span>
+      <h1 class="reveal" data-delay="1">Работа <span class="text-grad">мечты</span> — в твоём Telegram</h1>
+      <p class="hero__sub reveal" data-delay="2">Тысячи проверенных вакансий, удобный поиск и отклик в один тап. Никаких резюме на десять страниц — просто открой бота.</p>
+      <div class="hero__cta reveal" data-delay="3">
+        <a class="btn" href="https://t.me/MizoJobRoBot" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.5 2.8 11.9c-.9.4-.9 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.6.7 1.1.3l2.7-2.2 4.9 3.6c.6.4 1.1.2 1.3-.6l3.4-15.9c.2-.9-.4-1.3-1.1-1.1Z"/></svg>
+          Начать в Telegram
+        </a>
+        <a class="btn btn-ghost" href="#stats">Как это работает</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero__scrolls" aria-hidden="true"><span class="mouse"></span>Листай вниз</div>
+</header>
+
+<!-- ============ STATS ============ -->
+<section class="section stats" id="stats">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow reveal"><span class="dot"></span>Цифры</span>
+      <h2 class="reveal" data-delay="1">MizoJob уже работает</h2>
+      <p class="reveal" data-delay="2">Мы соединяем соискателей и работодателей каждый день — и делаем это в масштабе.</p>
+    </div>
+    <div class="stats__grid" id="statsGrid">
+      <div class="stat reveal" data-delay="1">
+        <div class="stat__num"><span class="counter" data-target="12500">0</span><span class="plus">+</span></div>
+        <div class="stat__label">Вакансий в базе</div>
+      </div>
+      <div class="stat reveal" data-delay="2">
+        <div class="stat__num"><span class="counter" data-target="48000">0</span><span class="plus">+</span></div>
+        <div class="stat__label">Пользователей бота</div>
+      </div>
+      <div class="stat reveal" data-delay="3">
+        <div class="stat__num"><span class="counter" data-target="9200">0</span><span class="plus">+</span></div>
+        <div class="stat__label">Трудоустроено</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VACANCIES (sticky zoom) ============ -->
+<section class="vac" id="vacancies">
+  <div class="vac__track" id="vacTrack">
+    <div class="vac__sticky">
+      <div class="wrap">
+        <div class="section__head">
+          <span class="eyebrow"><span class="dot"></span>Направления</span>
+          <h2>Вакансии на любой вкус</h2>
+          <p>От текста до соцсетей — выбери то, что тебе по душе, и откликнись прямо в боте.</p>
+        </div>
+        <div class="vac__cards" id="vacCards">
+          <article class="vcard" data-i="0">
+            <div class="vcard__icon">✍️</div>
+            <h3>Редактор текстов</h3>
+            <p class="vcard__desc">Вычитка и правка текстов: грамотность, стиль, структура. Статьи, посты, лендинги.</p>
+            <div class="vcard__meta">
+              <span class="tag tag--pay">от 25 000 ₽</span>
+              <span class="tag">Удалённо</span>
+            </div>
+          </article>
+          <article class="vcard" data-i="1">
+            <div class="vcard__icon">📱</div>
+            <h3>СММ-менеджер</h3>
+            <p class="vcard__desc">Ведение соцсетей: контент-план, посты и сторис, работа с аудиторией и аналитика.</p>
+            <div class="vcard__meta">
+              <span class="tag tag--pay">от 30 000 ₽</span>
+              <span class="tag">Удалённо</span>
+            </div>
+          </article>
+          <article class="vcard" data-i="2">
+            <div class="vcard__icon">🌐</div>
+            <h3>Перевод текстов</h3>
+            <p class="vcard__desc">Перевод статей, документов и субтитров. Точность и сохранение смысла оригинала.</p>
+            <div class="vcard__meta">
+              <span class="tag tag--pay">от 20 000 ₽</span>
+              <span class="tag">Удалённо</span>
+            </div>
+          </article>
+        </div>
+        <div class="vac__foot">
+          <a class="btn" href="https://t.me/MizoJobRoBot" target="_blank" rel="noopener">Смотреть все вакансии</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BOTTOM CTA ============ -->
+<section class="cta">
+  <div class="cta__media">
+    <video autoplay muted loop playsinline poster="video1-poster.jpg" id="ctaVideo">
+      <source src="video1.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="cta__fallback" id="ctaFallback"></div>
+  <div class="cta__scrim"></div>
+
+  <div class="wrap">
+    <div class="cta__grid">
+      <div class="reveal">
+        <h2>Все вакансии прямо в одном боте</h2>
+        <p class="cta__sub">Поиск, фильтры, избранное и мгновенный отклик — всё внутри Telegram. Установка не нужна.</p>
+        <a class="btn cta__btn" href="https://t.me/MizoJobRoBot" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.5 2.8 11.9c-.9.4-.9 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.6.7 1.1.3l2.7-2.2 4.9 3.6c.6.4 1.1.2 1.3-.6l3.4-15.9c.2-.9-.4-1.3-1.1-1.1Z"/></svg>
+          Get started
+        </a>
+      </div>
+      <div class="phone-wrap reveal" data-delay="2">
+        <div class="phone">
+          <div class="phone__screen">
+            <!-- заменить на реальный скриншот: <img src="bot-screen.png" alt="Бот MizoJob"> -->
+            <img src="bot-screen.png" alt="Экран бота MizoJob" onerror="this.style.display='none'">
+            <div class="phone__placeholder">
+              <div class="ph-head">◆ MizoJob</div>
+              <div class="ph-bubble"><b>MizoJob</b><span>Привет! Нашёл для тебя 3 свежие вакансии 👇</span></div>
+              <div class="ph-bubble"><b>Редактор текстов</b><span>от 25 000 ₽ · Удалённо</span></div>
+              <div class="ph-bubble me"><span>Показать отклик →</span></div>
+              <div class="ph-bubble"><b>СММ-менеджер</b><span>от 30 000 ₽ · Удалённо</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap footer__grid">
+    <a class="logo" href="#top"><span class="diamond">◆</span> MizoJob</a>
+    <p class="footer__about">Сервис поиска работы в Telegram. Свежие вакансии каждый день: удалёнка, редактура, СММ, переводы и многое другое.</p>
+    <a class="footer__link" href="https://t.me/MizoJobRoBot" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.5 2.8 11.9c-.9.4-.9 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.6.7 1.1.3l2.7-2.2 4.9 3.6c.6.4 1.1.2 1.3-.6l3.4-15.9c.2-.9-.4-1.3-1.1-1.1Z"/></svg>
+      @MizoJobRoBot
+    </a>
+    <div class="footer__bottom">
+      <span>© 2026 MizoJob. Все права защищены.</span>
+      <span>Сделано с ♥ для тех, кто ищет работу</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- Video fallback: show animated gradient if video can't play ---- */
+  function guardVideo(videoId, fallbackId){
+    var v = document.getElementById(videoId);
+    var f = document.getElementById(fallbackId);
+    if(!v || !f) return;
+    function fail(){ f.classList.add('show'); }
+    v.addEventListener('error', fail, true);
+    // if no data after a moment, fall back
+    setTimeout(function(){
+      if(v.readyState < 2) fail();
+    }, 2500);
+    // pause video entirely when reduced motion requested
+    if(reduce){ try{ v.pause(); }catch(e){} }
+  }
+  guardVideo('heroVideo','heroFallback');
+  guardVideo('ctaVideo','ctaFallback');
+
+  /* ---- Scroll reveal ---- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if(reduce){
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  } else if('IntersectionObserver' in window){
+    var ro = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target); }
+      });
+    }, {threshold:.15, rootMargin:'0px 0px -8% 0px'});
+    revealEls.forEach(function(el){ ro.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* ---- Counters ---- */
+  function formatNum(n){ return n.toLocaleString('ru-RU'); }
+  function runCounters(){
+    var counters = document.querySelectorAll('.counter');
+    counters.forEach(function(c){
+      var target = parseInt(c.getAttribute('data-target'),10) || 0;
+      if(reduce){ c.textContent = formatNum(target); return; }
+      var dur = 1500, start = null;
+      function ease(t){ return 1 - Math.pow(1 - t, 3); } /* easeOutCubic */
+      function step(ts){
+        if(start===null) start = ts;
+        var p = Math.min((ts-start)/dur, 1);
+        c.textContent = formatNum(Math.round(ease(p)*target));
+        if(p<1) requestAnimationFrame(step);
+        else c.textContent = formatNum(target);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+  var statsSection = document.getElementById('stats');
+  if(statsSection && 'IntersectionObserver' in window && !reduce){
+    var co = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ runCounters(); co.disconnect(); }
+      });
+    }, {threshold:.35});
+    co.observe(statsSection);
+  } else {
+    runCounters();
+  }
+
+  /* ---- Vacancy sticky zoom tied to scroll progress ---- */
+  var track = document.getElementById('vacTrack');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.vcard'));
+  if(track && cards.length && !reduce){
+    var ticking = false;
+    function onScroll(){
+      if(ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){
+        var rect = track.getBoundingClientRect();
+        var vh = window.innerHeight;
+        // progress 0 -> 1 as the track scrolls through the viewport
+        var total = rect.height - vh;
+        var scrolled = -rect.top;
+        var p = total > 0 ? scrolled/total : 0;
+        p = Math.max(0, Math.min(1, p));
+        cards.forEach(function(card, i){
+          // each card gets its own window within the progress range
+          var seg = 1 / cards.length;
+          var localStart = i * seg * 0.6;              // overlap the segments a bit
+          var local = (p - localStart) / (seg + 0.25);
+          local = Math.max(0, Math.min(1, local));
+          var scale = 0.8 + local * 0.2;               // 0.8 -> 1
+          var opacity = 0.25 + local * 0.75;           // 0.25 -> 1
+          card.style.transform = 'scale(' + scale.toFixed(3) + ')';
+          card.style.opacity = opacity.toFixed(3);
+        });
+        ticking = false;
+      });
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', onScroll);
+    onScroll();
+  } else if(cards.length){
+    // reduced motion or no track: fallback via IO fade+scale
+    cards.forEach(function(c){ c.style.transition='transform .6s ease, opacity .6s ease'; });
+    if('IntersectionObserver' in window && !reduce){
+      var vo = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            e.target.style.transform='scale(1)';
+            e.target.style.opacity='1';
+            vo.unobserve(e.target);
+          }
+        });
+      }, {threshold:.3});
+      cards.forEach(function(c){ vo.observe(c); });
+    } else {
+      cards.forEach(function(c){ c.style.transform='none'; c.style.opacity='1'; });
+    }
+  }
+
+  /* ---- 3D tilt on hover (fine pointer only) ---- */
+  if(!reduce && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    var tiltCards = document.querySelectorAll('.vcard, .stat');
+    tiltCards.forEach(function(card){
+      card.addEventListener('mousemove', function(ev){
+        var r = card.getBoundingClientRect();
+        var x = (ev.clientX - r.left)/r.width - .5;
+        var y = (ev.clientY - r.top)/r.height - .5;
+        card.style.setProperty('--tiltX', (y*-6).toFixed(2)+'deg');
+        card.style.setProperty('--tiltY', (x*6).toFixed(2)+'deg');
+        // only apply tilt to stat cards (vcard scale is scroll-driven)
+        if(card.classList.contains('stat')){
+          card.style.transform = 'translateY(-8px) perspective(700px) rotateX(var(--tiltX)) rotateY(var(--tiltY))';
+        }
+      });
+      card.addEventListener('mouseleave', function(){
+        if(card.classList.contains('stat')) card.style.transform = '';
+      });
+    });
+  }
+
+  /* ---- Language switcher (visual only) ---- */
+  var langBtns = document.querySelectorAll('.lang button');
+  langBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      langBtns.forEach(function(x){ x.classList.remove('active'); });
+      b.classList.add('active');
+    });
+  });
+
+  /* ---- Smooth-scroll anchors (respect reduced motion) ---- */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href');
+      if(id.length<2) return;
+      var t = document.querySelector(id);
+      if(!t) return;
+      e.preventDefault();
+      t.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'start'});
+    });
+  });
+})();
+</script>
+</body>
+</html>
