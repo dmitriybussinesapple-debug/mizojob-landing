@@ -123,28 +123,14 @@ button{font-family:inherit}
 
 /* ============ HERO ============ */
 .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;isolation:isolate}
-.hero__media{position:absolute;inset:0;z-index:-3;background:var(--grad-warm)}
-.hero__media video{width:100%;height:100%;object-fit:cover;filter:saturate(1.1)}
-/* animated gradient fallback (shows if video fails / absent) */
-.hero__fallback{
-  position:absolute;inset:0;z-index:-2;
-  background:linear-gradient(120deg,#FFC29A,#FF7A59,#FF5E3A,#FFC29A);
-  background-size:300% 300%;
-  animation:heroGrad 14s ease infinite;
-  opacity:0;transition:opacity .4s;
-}
-.hero__fallback.show{opacity:1}
-@keyframes heroGrad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-/* left scrim for readability */
-.hero__scrim{
-  position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(90deg,rgba(28,14,10,.72) 0%,rgba(28,14,10,.42) 42%,rgba(28,14,10,.05) 78%,transparent 100%);
-}
+.hero__media{position:absolute;inset:0;z-index:-1;background:#1c0e0a}
+.hero__media video{width:100%;height:100%;object-fit:cover}
 .hero__inner{position:relative;padding-top:120px;padding-bottom:80px;max-width:660px}
-.hero h1{font-size:clamp(2.5rem,7.5vw,4.6rem);color:#fff;margin:18px 0 0}
-.hero__sub{color:rgba(255,255,255,.9);font-size:clamp(1.05rem,2.4vw,1.28rem);margin-top:22px;max-width:520px}
+.hero h1{font-size:clamp(2.5rem,7.5vw,4.6rem);color:#fff;margin:18px 0 0;text-shadow:0 2px 24px rgba(0,0,0,.35)}
+.hero__sub{color:rgba(255,255,255,.95);font-size:clamp(1.05rem,2.4vw,1.28rem);margin-top:22px;max-width:520px;text-shadow:0 1px 12px rgba(0,0,0,.4)}
 .hero__cta{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap}
-.hero .eyebrow{color:#fff}
+.hero .eyebrow{color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+.nav .logo,.nav .lang{text-shadow:0 1px 10px rgba(0,0,0,.35)}
 .hero .eyebrow .dot{background:var(--peach);box-shadow:0 0 0 4px rgba(255,194,154,.25)}
 .hero__scrolls{
   position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
@@ -155,59 +141,54 @@ button{font-family:inherit}
 .hero__scrolls .mouse::after{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:4px;height:7px;border-radius:2px;background:#fff;animation:scrollDot 1.6s var(--ease) infinite}
 @keyframes scrollDot{0%{opacity:0;transform:translate(-50%,0)}40%{opacity:1}80%{opacity:0;transform:translate(-50%,12px)}100%{opacity:0}}
 
-/* ============ STATS (sequential scroll reveal, Add/Send/Exchange style) ============ */
-.stats{background:var(--white);position:relative}
-.stats__track{position:relative;height:300vh}       /* tall scroll area for sequencing */
-.stats__sticky{position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:70px 0}
-.stats__list{display:flex;flex-direction:column;gap:20px;max-width:640px;margin:38px auto 0;width:100%}
-.stat{
-  opacity:.15;transform:translateY(44px) scale(.9);
-  transition:opacity .2s linear,transform .2s linear;
-  will-change:transform,opacity;
+/* shared vivid coral / orange glass surface */
+.glass-coral{
+  background:
+    linear-gradient(155deg,rgba(255,255,255,.55),rgba(255,255,255,0) 46%),
+    linear-gradient(150deg,rgba(255,122,89,.42),rgba(255,94,58,.26));
+  border:1px solid rgba(255,255,255,.65);
+  box-shadow:0 30px 60px -24px rgba(255,94,58,.55),inset 0 1px 0 rgba(255,255,255,.7);
+  backdrop-filter:blur(12px) saturate(1.25);-webkit-backdrop-filter:blur(12px) saturate(1.25);
 }
+
+/* ============ STATS (sequential fly-up reveal, Add / Send / Exchange style) ============ */
+.stats{background:var(--white);position:relative}
+.stats__track{position:relative;height:320vh}       /* tall scroll area for sequencing */
+.stats__sticky{position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:70px 0}
+.stats__list{display:flex;flex-direction:column;gap:22px;max-width:660px;margin:40px auto 0;width:100%}
+.stat{opacity:0;transform:translateY(90px);will-change:transform,opacity}
 .stat__box{
   position:relative;overflow:hidden;
-  display:flex;align-items:center;gap:22px;
-  padding:28px 30px;border-radius:var(--radius-lg);
-  background:var(--glass-bg);
-  border:1px solid var(--glass-border);
-  box-shadow:var(--glass-shadow);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  display:flex;align-items:center;gap:24px;
+  padding:30px 32px;border-radius:var(--radius-lg);
   transition:transform .4s var(--ease),box-shadow .4s var(--ease);
 }
-.stat__box::before{content:"";position:absolute;top:-45%;right:-20%;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.5),transparent 70%);pointer-events:none}
-.stat__badge{flex:none;width:62px;height:62px;border-radius:18px;display:grid;place-items:center;font-size:1.7rem;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6)}
-.stat__num{font-family:'Space Grotesk';font-weight:700;font-size:clamp(2.2rem,6.5vw,3rem);line-height:1;color:var(--coral-deep)}
+.stat__box::before{content:"";position:absolute;top:-45%;right:-15%;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.55),transparent 70%);pointer-events:none}
+.stat__badge{flex:none;width:66px;height:66px;border-radius:20px;display:grid;place-items:center;font-size:1.8rem;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),0 8px 18px -8px rgba(255,94,58,.5)}
+.stat__num{font-family:'Space Grotesk';font-weight:700;font-size:clamp(2.3rem,7vw,3.2rem);line-height:1;color:var(--coral-deep)}
 .stat__num .plus{color:var(--coral)}
-.stat__label{margin-top:7px;font-weight:600;color:#7a4f3f;font-size:1.02rem}
+.stat__label{margin-top:8px;font-weight:600;color:#7a4f3f;font-size:1.05rem}
 
-/* ============ VACANCIES (sticky zoom, coral glass columns) ============ */
+/* ============ VACANCIES ("Вакансии на любой вкус" — fly-up cards) ============ */
 .vac{background:linear-gradient(180deg,#fff 0%,var(--cream) 100%)}
-.vac__track{position:relative;height:300vh}          /* tall scroll area */
+.vac__track{position:relative;height:340vh}          /* tall scroll area */
 .vac__sticky{position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:70px 0}
+.vac .section__head h2{font-size:clamp(2.1rem,6vw,3.5rem)}
 .vac__cards{
-  display:grid;gap:22px;grid-template-columns:1fr;max-width:1080px;margin:40px auto 0;width:100%;
+  display:grid;gap:24px;grid-template-columns:1fr;max-width:1080px;margin:46px auto 0;width:100%;
 }
-.vcard{
-  opacity:.25;transform:scale(.8) translateY(24px);
-  transition:opacity .2s linear,transform .2s linear;
-  will-change:transform,opacity;
-}
+.vcard{opacity:0;transform:translateY(120px);will-change:transform,opacity}
 .vcard__box{
   position:relative;overflow:hidden;height:100%;
   display:flex;flex-direction:column;
-  padding:34px 28px;min-height:340px;border-radius:var(--radius-lg);
-  background:var(--glass-bg);
-  border:1px solid var(--glass-border);
-  box-shadow:var(--glass-shadow);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  padding:34px 30px;min-height:340px;border-radius:var(--radius-lg);
   transition:transform .4s var(--ease),box-shadow .4s var(--ease);
 }
-.vcard__box::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(160deg,rgba(255,255,255,.35),transparent 55%);pointer-events:none}
-.vcard__icon{font-size:2.1rem;width:62px;height:62px;display:grid;place-items:center;border-radius:18px;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6)}
-.vcard h3{font-size:1.4rem;margin-top:18px;color:var(--ink)}
+.vcard__box::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(160deg,rgba(255,255,255,.4),transparent 55%);pointer-events:none}
+.vcard__icon{font-size:2.2rem;width:66px;height:66px;display:grid;place-items:center;border-radius:20px;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),0 8px 18px -8px rgba(255,94,58,.5)}
+.vcard h3{font-size:1.45rem;margin-top:20px;color:var(--ink)}
 .vcard__desc{margin-top:10px;color:#6b4a3d;font-size:.98rem;flex:1}
-.vcard__meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.vcard__meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
 .tag{
   font-weight:600;font-size:.82rem;padding:6px 13px;border-radius:999px;
   background:rgba(255,94,58,.12);color:var(--coral-deep);border:1px solid rgba(255,94,58,.22);
@@ -298,8 +279,6 @@ button{font-family:inherit}
       <source src="video2.mp4" type="video/mp4">
     </video>
   </div>
-  <div class="hero__fallback" id="heroFallback"></div>
-  <div class="hero__scrim"></div>
 
   <nav class="nav">
     <div class="wrap nav__inner">
@@ -342,7 +321,7 @@ button{font-family:inherit}
         </div>
         <div class="vac__cards" id="vacCards">
           <article class="vcard" data-i="0">
-            <div class="vcard__box">
+            <div class="vcard__box glass-coral">
               <div class="vcard__icon">✍️</div>
               <h3>Редактор текстов</h3>
               <p class="vcard__desc">Вычитка и правка текстов: грамотность, стиль, структура. Статьи, посты, лендинги.</p>
@@ -353,7 +332,7 @@ button{font-family:inherit}
             </div>
           </article>
           <article class="vcard" data-i="1">
-            <div class="vcard__box">
+            <div class="vcard__box glass-coral">
               <div class="vcard__icon">📱</div>
               <h3>СММ-менеджер</h3>
               <p class="vcard__desc">Ведение соцсетей: контент-план, посты и сторис, работа с аудиторией и аналитика.</p>
@@ -364,7 +343,7 @@ button{font-family:inherit}
             </div>
           </article>
           <article class="vcard" data-i="2">
-            <div class="vcard__box">
+            <div class="vcard__box glass-coral">
               <div class="vcard__icon">🌐</div>
               <h3>Перевод текстов</h3>
               <p class="vcard__desc">Перевод статей, документов и субтитров. Точность и сохранение смысла оригинала.</p>
@@ -395,7 +374,7 @@ button{font-family:inherit}
         </div>
         <div class="stats__list" id="statsList">
           <div class="stat" data-i="0">
-            <div class="stat__box">
+            <div class="stat__box glass-coral">
               <div class="stat__badge">📥</div>
               <div>
                 <div class="stat__num"><span class="counter" data-target="12500">0</span><span class="plus">+</span></div>
@@ -404,7 +383,7 @@ button{font-family:inherit}
             </div>
           </div>
           <div class="stat" data-i="1">
-            <div class="stat__box">
+            <div class="stat__box glass-coral">
               <div class="stat__badge">👥</div>
               <div>
                 <div class="stat__num"><span class="counter" data-target="48000">0</span><span class="plus">+</span></div>
@@ -413,7 +392,7 @@ button{font-family:inherit}
             </div>
           </div>
           <div class="stat" data-i="2">
-            <div class="stat__box">
+            <div class="stat__box glass-coral">
               <div class="stat__badge">🤝</div>
               <div>
                 <div class="stat__num"><span class="counter" data-target="9200">0</span><span class="plus">+</span></div>
@@ -507,113 +486,66 @@ button{font-family:inherit}
     requestAnimationFrame(step);
   }
 
-  /* ---- Stats: sequential scroll reveal (Add / Send / Exchange feel) ---- */
-  var statsTrack = document.getElementById('statsTrack');
-  var statEls = Array.prototype.slice.call(document.querySelectorAll('.stat'));
-  if(statsTrack && statEls.length && !reduce){
-    var sTick = false;
-    function onStats(){
-      if(sTick) return;
-      sTick = true;
-      requestAnimationFrame(function(){
-        var rect = statsTrack.getBoundingClientRect();
-        var vh = window.innerHeight;
-        var total = rect.height - vh;
-        var p = total > 0 ? (-rect.top)/total : 0;
-        p = Math.max(0, Math.min(1, p));
-        statEls.forEach(function(card, i){
-          var seg = 1 / statEls.length;
-          // each card leads slightly into the previous one's window so they
-          // appear one after another as you scroll
-          var local = (p - i*seg*0.82) / (seg*0.9);
-          local = Math.max(0, Math.min(1, local));
-          card.style.opacity = (0.15 + local*0.85).toFixed(3);
-          card.style.transform = 'translateY(' + ((1-local)*44).toFixed(1) + 'px) scale(' + (0.9 + local*0.1).toFixed(3) + ')';
-          if(local > 0.35) animateCounter(card.querySelector('.counter'));
+  /* ---- Fly-up on scroll (Jeton style): cards rise from below, one after
+         another, tied to scroll position inside a tall sticky section ---- */
+  function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
+  function flyUp(trackId, els, rise, withCount){
+    if(!els.length) return;
+    var track = document.getElementById(trackId);
+    if(track && !reduce){
+      var tick = false;
+      function upd(){
+        if(tick) return;
+        tick = true;
+        requestAnimationFrame(function(){
+          var rect = track.getBoundingClientRect();
+          var total = rect.height - window.innerHeight;
+          var p = total > 0 ? (-rect.top)/total : 0;
+          p = Math.max(0, Math.min(1, p));
+          var n = els.length;
+          els.forEach(function(el, i){
+            var span = 1 / (n + 0.6);          // per-card active span
+            var start = i * span * 0.78;        // slight overlap -> flowing stagger
+            var local = Math.max(0, Math.min(1, (p - start) / span));
+            var le = easeOut(local);
+            el.style.opacity = le.toFixed(3);
+            el.style.transform = 'translateY(' + ((1 - le) * rise).toFixed(1) + 'px)';
+            if(withCount && local > 0.4) animateCounter(el.querySelector('.counter'));
+          });
+          tick = false;
         });
-        sTick = false;
-      });
-    }
-    window.addEventListener('scroll', onStats, {passive:true});
-    window.addEventListener('resize', onStats);
-    onStats();
-  } else if(statEls.length){
-    // fallback: staggered appearance (slide-up) + counters
-    statEls.forEach(function(c){ c.style.transition = 'transform .7s var(--ease), opacity .7s var(--ease)'; });
-    if('IntersectionObserver' in window && !reduce){
-      var so = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
-          if(e.isIntersecting){
-            var idx = statEls.indexOf(e.target);
-            setTimeout(function(){
-              e.target.style.opacity = '1';
-              e.target.style.transform = 'none';
-              animateCounter(e.target.querySelector('.counter'));
-            }, idx*180);
-            so.unobserve(e.target);
-          }
-        });
-      }, {threshold:.35});
-      statEls.forEach(function(c){ so.observe(c); });
+      }
+      window.addEventListener('scroll', upd, {passive:true});
+      window.addEventListener('resize', upd);
+      upd();
     } else {
-      statEls.forEach(function(c){
-        c.style.opacity = '1'; c.style.transform = 'none';
-        animateCounter(c.querySelector('.counter'));
-      });
+      // reduced motion / no sticky track -> staggered reveal via observer
+      els.forEach(function(el){ el.style.transition = 'transform .7s var(--ease), opacity .7s var(--ease)'; });
+      if('IntersectionObserver' in window && !reduce){
+        var io = new IntersectionObserver(function(entries){
+          entries.forEach(function(e){
+            if(e.isIntersecting){
+              var idx = els.indexOf(e.target);
+              setTimeout(function(){
+                e.target.style.opacity = '1';
+                e.target.style.transform = 'none';
+                if(withCount) animateCounter(e.target.querySelector('.counter'));
+              }, idx*160);
+              io.unobserve(e.target);
+            }
+          });
+        }, {threshold:.3});
+        els.forEach(function(el){ io.observe(el); });
+      } else {
+        els.forEach(function(el){
+          el.style.opacity = '1'; el.style.transform = 'none';
+          if(withCount) animateCounter(el.querySelector('.counter'));
+        });
+      }
     }
   }
-
-  /* ---- Vacancy sticky zoom tied to scroll progress ---- */
-  var track = document.getElementById('vacTrack');
-  var cards = Array.prototype.slice.call(document.querySelectorAll('.vcard'));
-  if(track && cards.length && !reduce){
-    var ticking = false;
-    function onScroll(){
-      if(ticking) return;
-      ticking = true;
-      requestAnimationFrame(function(){
-        var rect = track.getBoundingClientRect();
-        var vh = window.innerHeight;
-        // progress 0 -> 1 as the track scrolls through the viewport
-        var total = rect.height - vh;
-        var scrolled = -rect.top;
-        var p = total > 0 ? scrolled/total : 0;
-        p = Math.max(0, Math.min(1, p));
-        cards.forEach(function(card, i){
-          // each card gets its own window within the progress range
-          var seg = 1 / cards.length;
-          var localStart = i * seg * 0.6;              // overlap the segments a bit
-          var local = (p - localStart) / (seg + 0.25);
-          local = Math.max(0, Math.min(1, local));
-          var scale = 0.8 + local * 0.2;               // 0.8 -> 1
-          var opacity = 0.25 + local * 0.75;           // 0.25 -> 1
-          card.style.transform = 'scale(' + scale.toFixed(3) + ') translateY(' + ((1-local)*24).toFixed(1) + 'px)';
-          card.style.opacity = opacity.toFixed(3);
-        });
-        ticking = false;
-      });
-    }
-    window.addEventListener('scroll', onScroll, {passive:true});
-    window.addEventListener('resize', onScroll);
-    onScroll();
-  } else if(cards.length){
-    // reduced motion or no track: fallback via IO fade+scale
-    cards.forEach(function(c){ c.style.transition='transform .6s ease, opacity .6s ease'; });
-    if('IntersectionObserver' in window && !reduce){
-      var vo = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
-          if(e.isIntersecting){
-            e.target.style.transform='scale(1) translateY(0)';
-            e.target.style.opacity='1';
-            vo.unobserve(e.target);
-          }
-        });
-      }, {threshold:.3});
-      cards.forEach(function(c){ vo.observe(c); });
-    } else {
-      cards.forEach(function(c){ c.style.transform='none'; c.style.opacity='1'; });
-    }
-  }
+  flyUp('statsTrack', Array.prototype.slice.call(document.querySelectorAll('.stat')), 90, true);
+  flyUp('vacTrack',  Array.prototype.slice.call(document.querySelectorAll('.vcard')), 120, false);
 
   /* ---- Language switcher (visual only) ---- */
   var langBtns = document.querySelectorAll('.lang button');
