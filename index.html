@@ -151,50 +151,71 @@ button{font-family:inherit}
   backdrop-filter:blur(12px) saturate(1.25);-webkit-backdrop-filter:blur(12px) saturate(1.25);
 }
 
-/* ============ STATS (sequential fly-up reveal, Add / Send / Exchange style) ============ */
+/* ============ STATS ("MizoJob уже работает") — Add/Send/Exchange sequential scroll ============ */
 .stats{background:var(--white);position:relative}
-.stats__track{position:relative;height:320vh}       /* tall scroll area for sequencing */
-.stats__sticky{position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:70px 0}
-.stats__list{display:flex;flex-direction:column;gap:22px;max-width:660px;margin:40px auto 0;width:100%}
-.stat{opacity:0;transform:translateY(90px);will-change:transform,opacity}
+.stats__track{position:relative;height:340vh}        /* tall scroll area for sequencing */
+.stats__sticky{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding:40px 0}
+.stats__head{text-align:center;padding:0 20px}
+.stats__head h2{font-size:clamp(1.9rem,5vw,3rem)}
+.stats__head .eyebrow{margin-bottom:8px}
+.stats__stage{position:relative;flex:1;min-height:200px;margin-top:20px}
+.stat{position:absolute;left:50%;top:50%;width:min(620px,90vw);opacity:0;will-change:transform,opacity}
 .stat__box{
   position:relative;overflow:hidden;
   display:flex;align-items:center;gap:24px;
-  padding:30px 32px;border-radius:var(--radius-lg);
-  transition:transform .4s var(--ease),box-shadow .4s var(--ease);
+  padding:32px 34px;border-radius:var(--radius-lg);
 }
 .stat__box::before{content:"";position:absolute;top:-45%;right:-15%;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.55),transparent 70%);pointer-events:none}
 .stat__badge{flex:none;width:66px;height:66px;border-radius:20px;display:grid;place-items:center;font-size:1.8rem;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),0 8px 18px -8px rgba(255,94,58,.5)}
 .stat__num{font-family:'Space Grotesk';font-weight:700;font-size:clamp(2.3rem,7vw,3.2rem);line-height:1;color:var(--coral-deep)}
 .stat__num .plus{color:var(--coral)}
 .stat__label{margin-top:8px;font-weight:600;color:#7a4f3f;font-size:1.05rem}
+/* static fallback (reduced motion / no JS) — stack the cards */
+.stats__stage.is-static{position:static;flex:none;display:flex;flex-direction:column;gap:20px;align-items:center;min-height:0}
+.stats__stage.is-static .stat{position:static;left:auto;top:auto;opacity:1;transform:none}
 
-/* ============ VACANCIES ("Вакансии на любой вкус" — fly-up cards) ============ */
+/* ============ VACANCIES ("Вакансии на любой вкус") — Unify-style scatter + parallax ============ */
 .vac{background:linear-gradient(180deg,#fff 0%,var(--cream) 100%)}
-.vac__track{position:relative;height:340vh}          /* tall scroll area */
-.vac__sticky{position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:70px 0}
-.vac .section__head h2{font-size:clamp(2.1rem,6vw,3.5rem)}
-.vac__cards{
-  display:grid;gap:24px;grid-template-columns:1fr;max-width:1080px;margin:46px auto 0;width:100%;
-}
-.vcard{opacity:0;transform:translateY(120px);will-change:transform,opacity}
+.vac__track{position:relative;height:360vh}
+.vac__sticky{position:sticky;top:0;height:100svh;display:flex;align-items:center;overflow:hidden}
+.vac__stage{position:relative;width:100%;max-width:var(--maxw);margin-inline:auto;padding:72px 20px}
+.vac__eyebrow{margin-bottom:14px}
+.vac__headline{font-family:'Space Grotesk';font-weight:700;letter-spacing:-.02em;font-size:clamp(2.6rem,8.5vw,5.2rem);line-height:1.02;color:var(--coral-deep);max-width:12ch}
+.vac__foot{margin-top:30px;position:relative;z-index:2}
+.vcard{width:330px;max-width:84vw;opacity:0;will-change:transform,opacity;margin:22px auto 0}
 .vcard__box{
-  position:relative;overflow:hidden;height:100%;
+  position:relative;overflow:hidden;
   display:flex;flex-direction:column;
-  padding:34px 30px;min-height:340px;border-radius:var(--radius-lg);
-  transition:transform .4s var(--ease),box-shadow .4s var(--ease);
+  padding:26px 26px;border-radius:var(--radius-lg);
 }
 .vcard__box::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(160deg,rgba(255,255,255,.4),transparent 55%);pointer-events:none}
-.vcard__icon{font-size:2.2rem;width:66px;height:66px;display:grid;place-items:center;border-radius:20px;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),0 8px 18px -8px rgba(255,94,58,.5)}
-.vcard h3{font-size:1.45rem;margin-top:20px;color:var(--ink)}
-.vcard__desc{margin-top:10px;color:#6b4a3d;font-size:.98rem;flex:1}
-.vcard__meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.vcard__icon{font-size:1.9rem;width:58px;height:58px;display:grid;place-items:center;border-radius:18px;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),0 8px 18px -8px rgba(255,94,58,.5)}
+.vcard h3{font-size:1.3rem;margin-top:16px;color:var(--ink)}
+.vcard__desc{margin-top:9px;color:#6b4a3d;font-size:.95rem}
+.vcard__meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
 .tag{
   font-weight:600;font-size:.82rem;padding:6px 13px;border-radius:999px;
   background:rgba(255,94,58,.12);color:var(--coral-deep);border:1px solid rgba(255,94,58,.22);
 }
 .tag--pay{background:var(--grad-coral);color:#fff;border-color:transparent}
-.vac__foot{text-align:center;margin-top:44px}
+
+/* desktop: scatter the profession cards around the headline (Unify-style) */
+@media(min-width:900px){
+  .vac__stage{min-height:78vh}
+  .vac__headline{max-width:9ch}
+  .vcard{position:absolute;margin:0}
+  .vcard--a{top:4%;right:0}
+  .vcard--b{top:37%;right:25%}
+  .vcard--c{top:63%;right:3%}
+}
+/* mobile: vacancies is a normal (non-pinned) stacked section */
+@media(max-width:899px){
+  .vac__track{height:auto}
+  .vac__sticky{position:static;height:auto;padding:80px 0}
+  .vac__stage{padding:0 20px}
+  .vac__headline{margin-inline:auto;text-align:center}
+  .vac__foot{text-align:center}
+}
 
 /* ============ BOTTOM CTA ============ */
 .cta{position:relative;overflow:hidden;min-height:100svh;background:var(--grad-coral)}
@@ -242,12 +263,6 @@ button{font-family:inherit}
 .footer__bottom{margin-top:34px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);font-size:.85rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 
 /* ============ RESPONSIVE ============ */
-@media(min-width:720px){
-  .vac__cards{grid-template-columns:repeat(3,1fr)}
-}
-@media(min-width:900px){
-  .cta__grid{grid-template-columns:1.1fr .9fr}
-}
 
 /* card hover: lift the inner box so it never clashes with the scroll-driven
    transform on the outer .stat / .vcard element */
@@ -263,8 +278,9 @@ button{font-family:inherit}
     transition-duration:.001ms!important;scroll-behavior:auto!important;
   }
   .reveal{opacity:1!important;transform:none!important}
-  .vcard{transform:none!important;opacity:1!important}
-  .stat{transform:none!important;opacity:1!important}
+  .stats__stage{position:static!important;display:flex;flex-direction:column;gap:20px;align-items:center;min-height:0}
+  .stat{position:static!important;left:auto!important;top:auto!important;transform:none!important;opacity:1!important}
+  .vcard{position:static!important;transform:none!important;opacity:1!important;margin:22px auto 0}
   .phone{animation:none!important}
   .hero__scrolls{display:none}
 }
@@ -309,51 +325,48 @@ button{font-family:inherit}
   <div class="hero__scrolls" aria-hidden="true"><span class="mouse"></span>Листай вниз</div>
 </header>
 
-<!-- ============ VACANCIES (sticky zoom, coral glass columns) ============ -->
+<!-- ============ VACANCIES ("Вакансии на любой вкус") — Unify-style scatter + parallax ============ -->
 <section class="vac" id="vacancies">
   <div class="vac__track" id="vacTrack">
     <div class="vac__sticky">
-      <div class="wrap">
-        <div class="section__head">
-          <span class="eyebrow"><span class="dot"></span>Направления</span>
-          <h2>Вакансии на любой вкус</h2>
-          <p>От текста до соцсетей — выбери то, что тебе по душе, и откликнись прямо в боте.</p>
-        </div>
-        <div class="vac__cards" id="vacCards">
-          <article class="vcard" data-i="0">
-            <div class="vcard__box glass-coral">
-              <div class="vcard__icon">✍️</div>
-              <h3>Редактор текстов</h3>
-              <p class="vcard__desc">Вычитка и правка текстов: грамотность, стиль, структура. Статьи, посты, лендинги.</p>
-              <div class="vcard__meta">
-                <span class="tag tag--pay">от 25 000 ₽</span>
-                <span class="tag">Удалённо</span>
-              </div>
+      <div class="vac__stage">
+        <span class="eyebrow vac__eyebrow"><span class="dot"></span>Направления</span>
+        <h2 class="vac__headline">Вакансии на любой вкус</h2>
+
+        <article class="vcard vcard--a" data-i="0">
+          <div class="vcard__box glass-coral">
+            <div class="vcard__icon">✍️</div>
+            <h3>Редактор текстов</h3>
+            <p class="vcard__desc">Вычитка и правка текстов: грамотность, стиль, структура.</p>
+            <div class="vcard__meta">
+              <span class="tag tag--pay">от 25 000 ₽</span>
+              <span class="tag">Удалённо</span>
             </div>
-          </article>
-          <article class="vcard" data-i="1">
-            <div class="vcard__box glass-coral">
-              <div class="vcard__icon">📱</div>
-              <h3>СММ-менеджер</h3>
-              <p class="vcard__desc">Ведение соцсетей: контент-план, посты и сторис, работа с аудиторией и аналитика.</p>
-              <div class="vcard__meta">
-                <span class="tag tag--pay">от 30 000 ₽</span>
-                <span class="tag">Удалённо</span>
-              </div>
+          </div>
+        </article>
+        <article class="vcard vcard--b" data-i="1">
+          <div class="vcard__box glass-coral">
+            <div class="vcard__icon">📱</div>
+            <h3>СММ-менеджер</h3>
+            <p class="vcard__desc">Ведение соцсетей: контент, посты и сторис, аналитика.</p>
+            <div class="vcard__meta">
+              <span class="tag tag--pay">от 30 000 ₽</span>
+              <span class="tag">Удалённо</span>
             </div>
-          </article>
-          <article class="vcard" data-i="2">
-            <div class="vcard__box glass-coral">
-              <div class="vcard__icon">🌐</div>
-              <h3>Перевод текстов</h3>
-              <p class="vcard__desc">Перевод статей, документов и субтитров. Точность и сохранение смысла оригинала.</p>
-              <div class="vcard__meta">
-                <span class="tag tag--pay">от 20 000 ₽</span>
-                <span class="tag">Удалённо</span>
-              </div>
+          </div>
+        </article>
+        <article class="vcard vcard--c" data-i="2">
+          <div class="vcard__box glass-coral">
+            <div class="vcard__icon">🌐</div>
+            <h3>Перевод текстов</h3>
+            <p class="vcard__desc">Перевод статей, документов и субтитров без потери смысла.</p>
+            <div class="vcard__meta">
+              <span class="tag tag--pay">от 20 000 ₽</span>
+              <span class="tag">Удалённо</span>
             </div>
-          </article>
-        </div>
+          </div>
+        </article>
+
         <div class="vac__foot">
           <a class="btn" href="https://t.me/MizoJobRoBot" target="_blank" rel="noopener">Смотреть все вакансии</a>
         </div>
@@ -362,42 +375,39 @@ button{font-family:inherit}
   </div>
 </section>
 
-<!-- ============ STATS (sequential scroll reveal, Add/Send/Exchange style) ============ -->
+<!-- ============ STATS ("MizoJob уже работает") — Add/Send/Exchange sequential scroll ============ -->
 <section class="stats" id="stats">
   <div class="stats__track" id="statsTrack">
     <div class="stats__sticky">
-      <div class="wrap">
-        <div class="section__head">
-          <span class="eyebrow"><span class="dot"></span>Цифры</span>
-          <h2>MizoJob уже работает</h2>
-          <p>Показатели растут каждый день — листай и смотри, как MizoJob набирает обороты.</p>
+      <div class="stats__head">
+        <span class="eyebrow"><span class="dot"></span>Цифры</span>
+        <h2>MizoJob уже работает</h2>
+      </div>
+      <div class="stats__stage" id="statsStage">
+        <div class="stat" data-i="0">
+          <div class="stat__box glass-coral">
+            <div class="stat__badge">📥</div>
+            <div>
+              <div class="stat__num"><span class="counter" data-target="12500">0</span><span class="plus">+</span></div>
+              <div class="stat__label">Вакансий в боте</div>
+            </div>
+          </div>
         </div>
-        <div class="stats__list" id="statsList">
-          <div class="stat" data-i="0">
-            <div class="stat__box glass-coral">
-              <div class="stat__badge">📥</div>
-              <div>
-                <div class="stat__num"><span class="counter" data-target="12500">0</span><span class="plus">+</span></div>
-                <div class="stat__label">Вакансий в боте</div>
-              </div>
+        <div class="stat" data-i="1">
+          <div class="stat__box glass-coral">
+            <div class="stat__badge">👥</div>
+            <div>
+              <div class="stat__num"><span class="counter" data-target="48000">0</span><span class="plus">+</span></div>
+              <div class="stat__label">Пользователей бота</div>
             </div>
           </div>
-          <div class="stat" data-i="1">
-            <div class="stat__box glass-coral">
-              <div class="stat__badge">👥</div>
-              <div>
-                <div class="stat__num"><span class="counter" data-target="48000">0</span><span class="plus">+</span></div>
-                <div class="stat__label">Пользователей бота</div>
-              </div>
-            </div>
-          </div>
-          <div class="stat" data-i="2">
-            <div class="stat__box glass-coral">
-              <div class="stat__badge">🤝</div>
-              <div>
-                <div class="stat__num"><span class="counter" data-target="9200">0</span><span class="plus">+</span></div>
-                <div class="stat__label">Трудоустроено</div>
-              </div>
+        </div>
+        <div class="stat" data-i="2">
+          <div class="stat__box glass-coral">
+            <div class="stat__badge">🤝</div>
+            <div>
+              <div class="stat__num"><span class="counter" data-target="9200">0</span><span class="plus">+</span></div>
+              <div class="stat__label">Трудоустроено</div>
             </div>
           </div>
         </div>
@@ -486,66 +496,106 @@ button{font-family:inherit}
     requestAnimationFrame(step);
   }
 
-  /* ---- Fly-up on scroll (Jeton style): cards rise from below, one after
-         another, tied to scroll position inside a tall sticky section ---- */
   function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
-  function flyUp(trackId, els, rise, withCount){
-    if(!els.length) return;
-    var track = document.getElementById(trackId);
-    if(track && !reduce){
-      var tick = false;
-      function upd(){
-        if(tick) return;
-        tick = true;
-        requestAnimationFrame(function(){
-          var rect = track.getBoundingClientRect();
-          var total = rect.height - window.innerHeight;
-          var p = total > 0 ? (-rect.top)/total : 0;
-          p = Math.max(0, Math.min(1, p));
-          var n = els.length;
-          els.forEach(function(el, i){
-            var span = 1 / (n + 0.6);          // per-card active span
-            var start = i * span * 0.78;        // slight overlap -> flowing stagger
-            var local = Math.max(0, Math.min(1, (p - start) / span));
-            var le = easeOut(local);
-            el.style.opacity = le.toFixed(3);
-            el.style.transform = 'translateY(' + ((1 - le) * rise).toFixed(1) + 'px)';
-            if(withCount && local > 0.4) animateCounter(el.querySelector('.counter'));
-          });
-          tick = false;
+  function smooth(t){ return t*t*(3 - 2*t); }
+  var hasIO = 'IntersectionObserver' in window;
+
+  function trackProgress(track){
+    var rect = track.getBoundingClientRect();
+    var total = rect.height - window.innerHeight;
+    return total > 0 ? Math.max(0, Math.min(1, (-rect.top)/total)) : 0;
+  }
+
+  /* ---- STATS: Add / Send / Exchange — cards pass up through the centre,
+         one at a time, tied to scroll; number counts up as each lands ---- */
+  (function(){
+    var track = document.getElementById('statsTrack');
+    var stage = document.getElementById('statsStage');
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.stat'));
+    if(!cards.length) return;
+    if(reduce || !track){
+      if(stage) stage.classList.add('is-static');
+      cards.forEach(function(c){ animateCounter(c.querySelector('.counter')); });
+      return;
+    }
+    var n = cards.length;
+    var lastCenter = (n - 0.5) / n;
+    var half = (0.5 / n) * 1.35;
+    var tick = false;
+    function upd(){
+      if(tick) return; tick = true;
+      requestAnimationFrame(function(){
+        var pe = Math.min(trackProgress(track), lastCenter);   // hold last card at the end
+        var travel = window.innerHeight * 0.82;
+        cards.forEach(function(card, i){
+          var d = pe - (i + 0.5) / n;                 // <0 below centre, >0 above
+          var vis = Math.max(0, 1 - Math.abs(d) / half);
+          var e = smooth(vis);
+          card.style.opacity = e.toFixed(3);
+          card.style.transform = 'translate(-50%,-50%) translateY(' + (-d * travel).toFixed(1) + 'px) scale(' + (0.9 + 0.1*e).toFixed(3) + ')';
+          if(vis > 0.55) animateCounter(card.querySelector('.counter'));
         });
-      }
-      window.addEventListener('scroll', upd, {passive:true});
-      window.addEventListener('resize', upd);
-      upd();
-    } else {
-      // reduced motion / no sticky track -> staggered reveal via observer
-      els.forEach(function(el){ el.style.transition = 'transform .7s var(--ease), opacity .7s var(--ease)'; });
-      if('IntersectionObserver' in window && !reduce){
+        tick = false;
+      });
+    }
+    window.addEventListener('scroll', upd, {passive:true});
+    window.addEventListener('resize', upd);
+    upd();
+  })();
+
+  /* ---- VACANCIES: big headline + profession cards that fly up and drift
+         with parallax on scroll (Jeton "Unify your finances" feel).
+         Desktop = scattered + parallax; mobile = simple staggered fly-up ---- */
+  (function(){
+    var track = document.getElementById('vacTrack');
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.vcard'));
+    if(!cards.length) return;
+    var desktop = window.matchMedia('(min-width:900px)').matches;
+
+    if(reduce || !track || !desktop){
+      // mobile / reduced motion -> staggered reveal via observer
+      cards.forEach(function(c){ c.style.transition = 'transform .7s var(--ease), opacity .7s var(--ease)'; });
+      if(hasIO && !reduce){
         var io = new IntersectionObserver(function(entries){
           entries.forEach(function(e){
             if(e.isIntersecting){
-              var idx = els.indexOf(e.target);
-              setTimeout(function(){
-                e.target.style.opacity = '1';
-                e.target.style.transform = 'none';
-                if(withCount) animateCounter(e.target.querySelector('.counter'));
-              }, idx*160);
+              var idx = cards.indexOf(e.target);
+              setTimeout(function(){ e.target.style.opacity='1'; e.target.style.transform='none'; }, idx*150);
               io.unobserve(e.target);
             }
           });
-        }, {threshold:.3});
-        els.forEach(function(el){ io.observe(el); });
+        }, {threshold:.2});
+        cards.forEach(function(c){ c.style.transform='translateY(60px)'; io.observe(c); });
       } else {
-        els.forEach(function(el){
-          el.style.opacity = '1'; el.style.transform = 'none';
-          if(withCount) animateCounter(el.querySelector('.counter'));
-        });
+        cards.forEach(function(c){ c.style.opacity='1'; c.style.transform='none'; });
       }
+      return;
     }
-  }
-  flyUp('statsTrack', Array.prototype.slice.call(document.querySelectorAll('.stat')), 90, true);
-  flyUp('vacTrack',  Array.prototype.slice.call(document.querySelectorAll('.vcard')), 120, false);
+
+    // desktop scroll-scrub: reveal window + continuous parallax drift
+    var revealStart = [0.02, 0.13, 0.24];
+    var speed = [0.14, 0.20, 0.09];   // parallax factor (× viewport height)
+    var tick = false;
+    function upd(){
+      if(tick) return; tick = true;
+      requestAnimationFrame(function(){
+        var p = trackProgress(track);
+        var vh = window.innerHeight;
+        cards.forEach(function(card, i){
+          var local = Math.max(0, Math.min(1, (p - revealStart[i]) / 0.34));
+          var e = easeOut(local);
+          var rise = (1 - e) * 130;                    // fly up into place
+          var drift = -(p - revealStart[i]) * speed[i] * vh;   // gentle parallax upward
+          card.style.opacity = e.toFixed(3);
+          card.style.transform = 'translateY(' + (rise + drift).toFixed(1) + 'px)';
+        });
+        tick = false;
+      });
+    }
+    window.addEventListener('scroll', upd, {passive:true});
+    window.addEventListener('resize', upd);
+    upd();
+  })();
 
   /* ---- Language switcher (visual only) ---- */
   var langBtns = document.querySelectorAll('.lang button');
