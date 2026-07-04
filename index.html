@@ -155,46 +155,59 @@ button{font-family:inherit}
 .hero__scrolls .mouse::after{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:4px;height:7px;border-radius:2px;background:#fff;animation:scrollDot 1.6s var(--ease) infinite}
 @keyframes scrollDot{0%{opacity:0;transform:translate(-50%,0)}40%{opacity:1}80%{opacity:0;transform:translate(-50%,12px)}100%{opacity:0}}
 
-/* ============ STATS ============ */
-.stats{background:var(--white)}
-.stats__grid{display:grid;gap:22px;grid-template-columns:1fr}
+/* ============ STATS (sequential scroll reveal, Add/Send/Exchange style) ============ */
+.stats{background:var(--white);position:relative}
+.stats__track{position:relative;height:300vh}       /* tall scroll area for sequencing */
+.stats__sticky{position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:70px 0}
+.stats__list{display:flex;flex-direction:column;gap:20px;max-width:640px;margin:38px auto 0;width:100%}
 .stat{
+  opacity:.15;transform:translateY(44px) scale(.9);
+  transition:opacity .2s linear,transform .2s linear;
+  will-change:transform,opacity;
+}
+.stat__box{
   position:relative;overflow:hidden;
-  padding:38px 30px;border-radius:var(--radius-lg);
+  display:flex;align-items:center;gap:22px;
+  padding:28px 30px;border-radius:var(--radius-lg);
   background:var(--glass-bg);
   border:1px solid var(--glass-border);
   box-shadow:var(--glass-shadow);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  text-align:center;
+  transition:transform .4s var(--ease),box-shadow .4s var(--ease);
 }
-.stat::before{content:"";position:absolute;top:-40%;right:-30%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.5),transparent 70%);pointer-events:none}
-.stat__num{font-family:'Space Grotesk';font-weight:700;font-size:clamp(2.6rem,7vw,3.4rem);line-height:1;color:var(--coral-deep)}
+.stat__box::before{content:"";position:absolute;top:-45%;right:-20%;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.5),transparent 70%);pointer-events:none}
+.stat__badge{flex:none;width:62px;height:62px;border-radius:18px;display:grid;place-items:center;font-size:1.7rem;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6)}
+.stat__num{font-family:'Space Grotesk';font-weight:700;font-size:clamp(2.2rem,6.5vw,3rem);line-height:1;color:var(--coral-deep)}
 .stat__num .plus{color:var(--coral)}
-.stat__label{margin-top:12px;font-weight:600;color:#7a4f3f;font-size:1.02rem}
+.stat__label{margin-top:7px;font-weight:600;color:#7a4f3f;font-size:1.02rem}
 
-/* ============ VACANCIES (sticky zoom) ============ */
+/* ============ VACANCIES (sticky zoom, coral glass columns) ============ */
 .vac{background:linear-gradient(180deg,#fff 0%,var(--cream) 100%)}
-.vac__track{position:relative;height:280vh}         /* tall scroll area */
+.vac__track{position:relative;height:300vh}          /* tall scroll area */
 .vac__sticky{position:sticky;top:0;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:70px 0}
 .vac__cards{
   display:grid;gap:22px;grid-template-columns:1fr;max-width:1080px;margin:40px auto 0;width:100%;
 }
 .vcard{
-  position:relative;overflow:hidden;
-  padding:30px 28px;border-radius:var(--radius-lg);
+  opacity:.25;transform:scale(.8) translateY(24px);
+  transition:opacity .2s linear,transform .2s linear;
+  will-change:transform,opacity;
+}
+.vcard__box{
+  position:relative;overflow:hidden;height:100%;
+  display:flex;flex-direction:column;
+  padding:34px 28px;min-height:340px;border-radius:var(--radius-lg);
   background:var(--glass-bg);
   border:1px solid var(--glass-border);
   box-shadow:var(--glass-shadow);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  transform:scale(.8);opacity:.25;
-  transition:transform .2s linear,opacity .2s linear,box-shadow .35s var(--ease);
-  will-change:transform,opacity;
+  transition:transform .4s var(--ease),box-shadow .4s var(--ease);
 }
-.vcard::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(160deg,rgba(255,255,255,.35),transparent 55%);pointer-events:none}
+.vcard__box::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(160deg,rgba(255,255,255,.35),transparent 55%);pointer-events:none}
 .vcard__icon{font-size:2.1rem;width:62px;height:62px;display:grid;place-items:center;border-radius:18px;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6)}
 .vcard h3{font-size:1.4rem;margin-top:18px;color:var(--ink)}
-.vcard__desc{margin-top:10px;color:#6b4a3d;font-size:.98rem}
-.vcard__meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.vcard__desc{margin-top:10px;color:#6b4a3d;font-size:.98rem;flex:1}
+.vcard__meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
 .tag{
   font-weight:600;font-size:.82rem;padding:6px 13px;border-radius:999px;
   background:rgba(255,94,58,.12);color:var(--coral-deep);border:1px solid rgba(255,94,58,.22);
@@ -250,17 +263,17 @@ button{font-family:inherit}
 
 /* ============ RESPONSIVE ============ */
 @media(min-width:720px){
-  .stats__grid{grid-template-columns:repeat(3,1fr)}
   .vac__cards{grid-template-columns:repeat(3,1fr)}
 }
 @media(min-width:900px){
   .cta__grid{grid-template-columns:1.1fr .9fr}
 }
 
-/* card hover only where pointer is fine (avoids clash with zoom transform on touch) */
+/* card hover: lift the inner box so it never clashes with the scroll-driven
+   transform on the outer .stat / .vcard element */
 @media(hover:hover) and (pointer:fine){
-  .stat{transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
-  .stat:hover{transform:translateY(-8px);box-shadow:0 30px 60px -18px rgba(255,94,58,.55)}
+  .stat:hover .stat__box{transform:translateY(-6px);box-shadow:0 30px 60px -18px rgba(255,94,58,.55)}
+  .vcard:hover .vcard__box{transform:translateY(-8px);box-shadow:0 34px 66px -18px rgba(255,94,58,.6)}
 }
 
 /* ============ REDUCED MOTION ============ */
@@ -271,6 +284,7 @@ button{font-family:inherit}
   }
   .reveal{opacity:1!important;transform:none!important}
   .vcard{transform:none!important;opacity:1!important}
+  .stat{transform:none!important;opacity:1!important}
   .phone{animation:none!important}
   .hero__scrolls{display:none}
 }
@@ -309,7 +323,7 @@ button{font-family:inherit}
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.5 2.8 11.9c-.9.4-.9 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.6.7 1.1.3l2.7-2.2 4.9 3.6c.6.4 1.1.2 1.3-.6l3.4-15.9c.2-.9-.4-1.3-1.1-1.1Z"/></svg>
           Начать в Telegram
         </a>
-        <a class="btn btn-ghost" href="#stats">Как это работает</a>
+        <a class="btn btn-ghost" href="#vacancies">Как это работает</a>
       </div>
     </div>
   </div>
@@ -317,32 +331,7 @@ button{font-family:inherit}
   <div class="hero__scrolls" aria-hidden="true"><span class="mouse"></span>Листай вниз</div>
 </header>
 
-<!-- ============ STATS ============ -->
-<section class="section stats" id="stats">
-  <div class="wrap">
-    <div class="section__head">
-      <span class="eyebrow reveal"><span class="dot"></span>Цифры</span>
-      <h2 class="reveal" data-delay="1">MizoJob уже работает</h2>
-      <p class="reveal" data-delay="2">Мы соединяем соискателей и работодателей каждый день — и делаем это в масштабе.</p>
-    </div>
-    <div class="stats__grid" id="statsGrid">
-      <div class="stat reveal" data-delay="1">
-        <div class="stat__num"><span class="counter" data-target="12500">0</span><span class="plus">+</span></div>
-        <div class="stat__label">Вакансий в базе</div>
-      </div>
-      <div class="stat reveal" data-delay="2">
-        <div class="stat__num"><span class="counter" data-target="48000">0</span><span class="plus">+</span></div>
-        <div class="stat__label">Пользователей бота</div>
-      </div>
-      <div class="stat reveal" data-delay="3">
-        <div class="stat__num"><span class="counter" data-target="9200">0</span><span class="plus">+</span></div>
-        <div class="stat__label">Трудоустроено</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ VACANCIES (sticky zoom) ============ -->
+<!-- ============ VACANCIES (sticky zoom, coral glass columns) ============ -->
 <section class="vac" id="vacancies">
   <div class="vac__track" id="vacTrack">
     <div class="vac__sticky">
@@ -354,35 +343,85 @@ button{font-family:inherit}
         </div>
         <div class="vac__cards" id="vacCards">
           <article class="vcard" data-i="0">
-            <div class="vcard__icon">✍️</div>
-            <h3>Редактор текстов</h3>
-            <p class="vcard__desc">Вычитка и правка текстов: грамотность, стиль, структура. Статьи, посты, лендинги.</p>
-            <div class="vcard__meta">
-              <span class="tag tag--pay">от 25 000 ₽</span>
-              <span class="tag">Удалённо</span>
+            <div class="vcard__box">
+              <div class="vcard__icon">✍️</div>
+              <h3>Редактор текстов</h3>
+              <p class="vcard__desc">Вычитка и правка текстов: грамотность, стиль, структура. Статьи, посты, лендинги.</p>
+              <div class="vcard__meta">
+                <span class="tag tag--pay">от 25 000 ₽</span>
+                <span class="tag">Удалённо</span>
+              </div>
             </div>
           </article>
           <article class="vcard" data-i="1">
-            <div class="vcard__icon">📱</div>
-            <h3>СММ-менеджер</h3>
-            <p class="vcard__desc">Ведение соцсетей: контент-план, посты и сторис, работа с аудиторией и аналитика.</p>
-            <div class="vcard__meta">
-              <span class="tag tag--pay">от 30 000 ₽</span>
-              <span class="tag">Удалённо</span>
+            <div class="vcard__box">
+              <div class="vcard__icon">📱</div>
+              <h3>СММ-менеджер</h3>
+              <p class="vcard__desc">Ведение соцсетей: контент-план, посты и сторис, работа с аудиторией и аналитика.</p>
+              <div class="vcard__meta">
+                <span class="tag tag--pay">от 30 000 ₽</span>
+                <span class="tag">Удалённо</span>
+              </div>
             </div>
           </article>
           <article class="vcard" data-i="2">
-            <div class="vcard__icon">🌐</div>
-            <h3>Перевод текстов</h3>
-            <p class="vcard__desc">Перевод статей, документов и субтитров. Точность и сохранение смысла оригинала.</p>
-            <div class="vcard__meta">
-              <span class="tag tag--pay">от 20 000 ₽</span>
-              <span class="tag">Удалённо</span>
+            <div class="vcard__box">
+              <div class="vcard__icon">🌐</div>
+              <h3>Перевод текстов</h3>
+              <p class="vcard__desc">Перевод статей, документов и субтитров. Точность и сохранение смысла оригинала.</p>
+              <div class="vcard__meta">
+                <span class="tag tag--pay">от 20 000 ₽</span>
+                <span class="tag">Удалённо</span>
+              </div>
             </div>
           </article>
         </div>
         <div class="vac__foot">
           <a class="btn" href="https://t.me/MizoJobRoBot" target="_blank" rel="noopener">Смотреть все вакансии</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS (sequential scroll reveal, Add/Send/Exchange style) ============ -->
+<section class="stats" id="stats">
+  <div class="stats__track" id="statsTrack">
+    <div class="stats__sticky">
+      <div class="wrap">
+        <div class="section__head">
+          <span class="eyebrow"><span class="dot"></span>Цифры</span>
+          <h2>MizoJob уже работает</h2>
+          <p>Показатели растут каждый день — листай и смотри, как MizoJob набирает обороты.</p>
+        </div>
+        <div class="stats__list" id="statsList">
+          <div class="stat" data-i="0">
+            <div class="stat__box">
+              <div class="stat__badge">📥</div>
+              <div>
+                <div class="stat__num"><span class="counter" data-target="12500">0</span><span class="plus">+</span></div>
+                <div class="stat__label">Вакансий в боте</div>
+              </div>
+            </div>
+          </div>
+          <div class="stat" data-i="1">
+            <div class="stat__box">
+              <div class="stat__badge">👥</div>
+              <div>
+                <div class="stat__num"><span class="counter" data-target="48000">0</span><span class="plus">+</span></div>
+                <div class="stat__label">Пользователей бота</div>
+              </div>
+            </div>
+          </div>
+          <div class="stat" data-i="2">
+            <div class="stat__box">
+              <div class="stat__badge">🤝</div>
+              <div>
+                <div class="stat__num"><span class="counter" data-target="9200">0</span><span class="plus">+</span></div>
+                <div class="stat__label">Трудоустроено</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -412,8 +451,10 @@ button{font-family:inherit}
       <div class="phone-wrap reveal" data-delay="2">
         <div class="phone">
           <div class="phone__screen">
-            <!-- заменить на реальный скриншот: <img src="bot-screen.png" alt="Бот MizoJob"> -->
-            <img src="bot-screen.png" alt="Экран бота MizoJob" onerror="this.style.display='none'">
+            <!-- Один телефон со скриншотом чата бота MizoJob.
+                 Чтобы вставить реальный скриншот — положи bot-screen.png рядом
+                 и раскомментируй строку ниже (он ляжет поверх макета чата): -->
+            <!-- <img src="bot-screen.png" alt="Экран бота MizoJob"> -->
             <div class="phone__placeholder">
               <div class="ph-head">◆ MizoJob</div>
               <div class="ph-bubble"><b>MizoJob</b><span>Привет! Нашёл для тебя 3 свежие вакансии 👇</span></div>
@@ -481,35 +522,79 @@ button{font-family:inherit}
     revealEls.forEach(function(el){ el.classList.add('in'); });
   }
 
-  /* ---- Counters ---- */
+  /* ---- Counter animation (per element, runs once) ---- */
   function formatNum(n){ return n.toLocaleString('ru-RU'); }
-  function runCounters(){
-    var counters = document.querySelectorAll('.counter');
-    counters.forEach(function(c){
-      var target = parseInt(c.getAttribute('data-target'),10) || 0;
-      if(reduce){ c.textContent = formatNum(target); return; }
-      var dur = 1500, start = null;
-      function ease(t){ return 1 - Math.pow(1 - t, 3); } /* easeOutCubic */
-      function step(ts){
-        if(start===null) start = ts;
-        var p = Math.min((ts-start)/dur, 1);
-        c.textContent = formatNum(Math.round(ease(p)*target));
-        if(p<1) requestAnimationFrame(step);
-        else c.textContent = formatNum(target);
-      }
-      requestAnimationFrame(step);
-    });
+  function animateCounter(c){
+    if(!c || c.dataset.done) return;
+    c.dataset.done = "1";
+    var target = parseInt(c.getAttribute('data-target'),10) || 0;
+    if(reduce){ c.textContent = formatNum(target); return; }
+    var dur = 1500, start = null;
+    function ease(t){ return 1 - Math.pow(1 - t, 3); } /* easeOutCubic */
+    function step(ts){
+      if(start===null) start = ts;
+      var p = Math.min((ts-start)/dur, 1);
+      c.textContent = formatNum(Math.round(ease(p)*target));
+      if(p<1) requestAnimationFrame(step);
+      else c.textContent = formatNum(target);
+    }
+    requestAnimationFrame(step);
   }
-  var statsSection = document.getElementById('stats');
-  if(statsSection && 'IntersectionObserver' in window && !reduce){
-    var co = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){ runCounters(); co.disconnect(); }
+
+  /* ---- Stats: sequential scroll reveal (Add / Send / Exchange feel) ---- */
+  var statsTrack = document.getElementById('statsTrack');
+  var statEls = Array.prototype.slice.call(document.querySelectorAll('.stat'));
+  if(statsTrack && statEls.length && !reduce){
+    var sTick = false;
+    function onStats(){
+      if(sTick) return;
+      sTick = true;
+      requestAnimationFrame(function(){
+        var rect = statsTrack.getBoundingClientRect();
+        var vh = window.innerHeight;
+        var total = rect.height - vh;
+        var p = total > 0 ? (-rect.top)/total : 0;
+        p = Math.max(0, Math.min(1, p));
+        statEls.forEach(function(card, i){
+          var seg = 1 / statEls.length;
+          // each card leads slightly into the previous one's window so they
+          // appear one after another as you scroll
+          var local = (p - i*seg*0.82) / (seg*0.9);
+          local = Math.max(0, Math.min(1, local));
+          card.style.opacity = (0.15 + local*0.85).toFixed(3);
+          card.style.transform = 'translateY(' + ((1-local)*44).toFixed(1) + 'px) scale(' + (0.9 + local*0.1).toFixed(3) + ')';
+          if(local > 0.35) animateCounter(card.querySelector('.counter'));
+        });
+        sTick = false;
       });
-    }, {threshold:.35});
-    co.observe(statsSection);
-  } else {
-    runCounters();
+    }
+    window.addEventListener('scroll', onStats, {passive:true});
+    window.addEventListener('resize', onStats);
+    onStats();
+  } else if(statEls.length){
+    // fallback: staggered appearance (slide-up) + counters
+    statEls.forEach(function(c){ c.style.transition = 'transform .7s var(--ease), opacity .7s var(--ease)'; });
+    if('IntersectionObserver' in window && !reduce){
+      var so = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            var idx = statEls.indexOf(e.target);
+            setTimeout(function(){
+              e.target.style.opacity = '1';
+              e.target.style.transform = 'none';
+              animateCounter(e.target.querySelector('.counter'));
+            }, idx*180);
+            so.unobserve(e.target);
+          }
+        });
+      }, {threshold:.35});
+      statEls.forEach(function(c){ so.observe(c); });
+    } else {
+      statEls.forEach(function(c){
+        c.style.opacity = '1'; c.style.transform = 'none';
+        animateCounter(c.querySelector('.counter'));
+      });
+    }
   }
 
   /* ---- Vacancy sticky zoom tied to scroll progress ---- */
@@ -536,7 +621,7 @@ button{font-family:inherit}
           local = Math.max(0, Math.min(1, local));
           var scale = 0.8 + local * 0.2;               // 0.8 -> 1
           var opacity = 0.25 + local * 0.75;           // 0.25 -> 1
-          card.style.transform = 'scale(' + scale.toFixed(3) + ')';
+          card.style.transform = 'scale(' + scale.toFixed(3) + ') translateY(' + ((1-local)*24).toFixed(1) + 'px)';
           card.style.opacity = opacity.toFixed(3);
         });
         ticking = false;
@@ -552,7 +637,7 @@ button{font-family:inherit}
       var vo = new IntersectionObserver(function(entries){
         entries.forEach(function(e){
           if(e.isIntersecting){
-            e.target.style.transform='scale(1)';
+            e.target.style.transform='scale(1) translateY(0)';
             e.target.style.opacity='1';
             vo.unobserve(e.target);
           }
@@ -562,27 +647,6 @@ button{font-family:inherit}
     } else {
       cards.forEach(function(c){ c.style.transform='none'; c.style.opacity='1'; });
     }
-  }
-
-  /* ---- 3D tilt on hover (fine pointer only) ---- */
-  if(!reduce && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
-    var tiltCards = document.querySelectorAll('.vcard, .stat');
-    tiltCards.forEach(function(card){
-      card.addEventListener('mousemove', function(ev){
-        var r = card.getBoundingClientRect();
-        var x = (ev.clientX - r.left)/r.width - .5;
-        var y = (ev.clientY - r.top)/r.height - .5;
-        card.style.setProperty('--tiltX', (y*-6).toFixed(2)+'deg');
-        card.style.setProperty('--tiltY', (x*6).toFixed(2)+'deg');
-        // only apply tilt to stat cards (vcard scale is scroll-driven)
-        if(card.classList.contains('stat')){
-          card.style.transform = 'translateY(-8px) perspective(700px) rotateX(var(--tiltX)) rotateY(var(--tiltY))';
-        }
-      });
-      card.addEventListener('mouseleave', function(){
-        if(card.classList.contains('stat')) card.style.transform = '';
-      });
-    });
   }
 
   /* ---- Language switcher (visual only) ---- */
