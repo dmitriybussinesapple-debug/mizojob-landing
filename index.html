@@ -15,17 +15,16 @@
   --coral:#FF7A59;
   --coral-deep:#FF5E3A;
   --peach:#FFC29A;
-  --chrome:#E9EDF2;
   --ink:#1c0e0a;
   --cream:#FFF6EF;
   --white:#ffffff;
 
   --grad-coral:linear-gradient(135deg,#FF7A59 0%,#FF5E3A 100%);
-  --grad-warm:linear-gradient(135deg,#FFC29A 0%,#FF7A59 55%,#FF5E3A 100%);
 
-  --glass-bg:linear-gradient(150deg,rgba(255,122,89,.22),rgba(255,94,58,.10));
-  --glass-border:rgba(255,255,255,.55);
-  --glass-shadow:0 20px 50px -18px rgba(255,94,58,.45);
+  /* Add / Send / Exchange ticker colours (Jeton-style) */
+  --green:#22C55E; --green-ink:#16A34A;
+  --blue:#3B82F6;  --blue-ink:#2563EB;
+  --pink:#EC4899;  --pink-ink:#DB2777;
 
   --radius:22px;
   --radius-lg:32px;
@@ -40,7 +39,7 @@ body{
   margin:0;
   font-family:'Manrope',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   color:var(--ink);
-  background:var(--cream);
+  background:var(--white);
   line-height:1.6;
   font-weight:400;
   overflow-x:hidden;
@@ -80,12 +79,7 @@ button{font-family:inherit}
 }
 .btn-ghost:hover{background:rgba(255,255,255,.24)}
 
-/* ============ SECTION SHELL ============ */
-.section{padding:96px 0;position:relative}
-.section__head{text-align:center;max-width:640px;margin:0 auto 54px}
-.section__head h2{font-size:clamp(1.9rem,5vw,3rem)}
-.section__head p{margin-top:14px;color:#6b4a3d;font-size:1.05rem}
-
+/* ============ EYEBROW ============ */
 .eyebrow{
   display:inline-flex;align-items:center;gap:8px;
   font-weight:700;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;
@@ -99,13 +93,9 @@ button{font-family:inherit}
 [data-delay="1"]{transition-delay:.12s}
 [data-delay="2"]{transition-delay:.24s}
 [data-delay="3"]{transition-delay:.36s}
-[data-delay="4"]{transition-delay:.48s}
 
 /* ============ TOP NAV ============ */
-.nav{
-  position:absolute;top:0;left:0;right:0;z-index:20;
-  padding:22px 0;
-}
+.nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:22px 0}
 .nav__inner{display:flex;align-items:center;justify-content:space-between}
 .logo{display:flex;align-items:center;gap:9px;font-family:'Space Grotesk';font-weight:700;font-size:1.25rem;color:#fff;letter-spacing:-.01em}
 .logo .diamond{color:var(--peach);font-size:1.1rem;filter:drop-shadow(0 2px 6px rgba(255,94,58,.6))}
@@ -141,117 +131,99 @@ button{font-family:inherit}
 .hero__scrolls .mouse::after{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:4px;height:7px;border-radius:2px;background:#fff;animation:scrollDot 1.6s var(--ease) infinite}
 @keyframes scrollDot{0%{opacity:0;transform:translate(-50%,0)}40%{opacity:1}80%{opacity:0;transform:translate(-50%,12px)}100%{opacity:0}}
 
-/* shared vivid coral / orange glass surface */
-.glass-coral{
-  background:
-    linear-gradient(155deg,rgba(255,255,255,.55),rgba(255,255,255,0) 46%),
-    linear-gradient(150deg,rgba(255,122,89,.42),rgba(255,94,58,.26));
-  border:1px solid rgba(255,255,255,.65);
-  box-shadow:0 30px 60px -24px rgba(255,94,58,.55),inset 0 1px 0 rgba(255,255,255,.7);
-  backdrop-filter:blur(12px) saturate(1.25);-webkit-backdrop-filter:blur(12px) saturate(1.25);
+/* ============ VACANCIES (vid3 "Unify your finances") ============
+   White stage · big coral-red headline centred · small light chips
+   scattered around it, drifting up with parallax on scroll. */
+.vac{background:#fff}
+.vac__track{position:relative;height:340vh}
+.vac__sticky{position:sticky;top:0;height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.vac__stage{position:relative;width:100%;max-width:var(--maxw);height:100%;margin-inline:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 20px}
+.vac__eyebrow{margin-bottom:20px}
+.vac__headline{
+  position:relative;z-index:2;text-align:center;
+  font-family:'Space Grotesk';font-weight:700;letter-spacing:-.03em;
+  font-size:clamp(2.6rem,9vw,6rem);line-height:.98;color:var(--coral-deep);
+  max-width:14ch;
 }
+.vac__foot{position:relative;z-index:3;margin-top:34px}
 
-/* ============ STATS ("MizoJob уже работает") — Add/Send/Exchange sequential scroll ============ */
-.stats{background:var(--white);position:relative}
-.stats__track{position:relative;height:340vh}        /* tall scroll area for sequencing */
-.stats__sticky{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding:40px 0}
-.stats__head{text-align:center;padding:0 20px}
-.stats__head h2{font-size:clamp(1.9rem,5vw,3rem)}
-.stats__head .eyebrow{margin-bottom:8px}
-.stats__stage{position:relative;flex:1;min-height:200px;margin-top:20px}
-.stat{position:absolute;left:50%;top:50%;width:min(620px,90vw);opacity:0;will-change:transform,opacity}
-.stat__box{
-  position:relative;overflow:hidden;
-  display:flex;align-items:center;gap:24px;
-  padding:32px 34px;border-radius:var(--radius-lg);
+/* scattered light chips */
+.chip{
+  z-index:1;opacity:0;will-change:transform,opacity;
+  display:inline-flex;align-items:center;gap:11px;
+  background:#fff;border:1px solid rgba(20,10,8,.06);
+  border-radius:16px;padding:12px 16px;
+  box-shadow:0 20px 44px -22px rgba(255,94,58,.4),0 2px 8px rgba(20,10,8,.05);
 }
-.stat__box::before{content:"";position:absolute;top:-45%;right:-15%;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.55),transparent 70%);pointer-events:none}
-.stat__badge{flex:none;width:66px;height:66px;border-radius:20px;display:grid;place-items:center;font-size:1.8rem;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),0 8px 18px -8px rgba(255,94,58,.5)}
-.stat__num{font-family:'Space Grotesk';font-weight:700;font-size:clamp(2.3rem,7vw,3.2rem);line-height:1;color:var(--coral-deep)}
-.stat__num .plus{color:var(--coral)}
-.stat__label{margin-top:8px;font-weight:600;color:#7a4f3f;font-size:1.05rem}
-/* static fallback (reduced motion / no JS) — stack the cards */
-.stats__stage.is-static{position:static;flex:none;display:flex;flex-direction:column;gap:20px;align-items:center;min-height:0}
-.stats__stage.is-static .stat{position:static;left:auto;top:auto;opacity:1;transform:none}
+.chip__ic{width:36px;height:36px;flex:none;border-radius:11px;display:grid;place-items:center;font-size:1.15rem;background:var(--cream)}
+.chip__tx b{font-family:'Space Grotesk';font-weight:700;font-size:.96rem;color:var(--ink);display:block;line-height:1.15}
+.chip__tx small{color:var(--coral-deep);font-weight:600;font-size:.8rem}
+.chip--pay{background:var(--grad-coral);border-color:transparent;box-shadow:0 20px 44px -18px rgba(255,94,58,.7)}
+.chip--pay .chip__tx b{color:#fff}
+.chip--pay .chip__ic{background:rgba(255,255,255,.25)}
 
-/* ============ VACANCIES ("Вакансии на любой вкус") — Unify-style scatter + parallax ============ */
-.vac{background:linear-gradient(180deg,#fff 0%,var(--cream) 100%)}
-.vac__track{position:relative;height:360vh}
-.vac__sticky{position:sticky;top:0;height:100svh;display:flex;align-items:center;overflow:hidden}
-.vac__stage{position:relative;width:100%;max-width:var(--maxw);margin-inline:auto;padding:72px 20px}
-.vac__eyebrow{margin-bottom:14px}
-.vac__headline{font-family:'Space Grotesk';font-weight:700;letter-spacing:-.02em;font-size:clamp(2.6rem,8.5vw,5.2rem);line-height:1.02;color:var(--coral-deep);max-width:12ch}
-.vac__foot{margin-top:30px;position:relative;z-index:2}
-.vcard{width:330px;max-width:84vw;opacity:0;will-change:transform,opacity;margin:22px auto 0}
-.vcard__box{
-  position:relative;overflow:hidden;
-  display:flex;flex-direction:column;
-  padding:26px 26px;border-radius:var(--radius-lg);
-}
-.vcard__box::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(160deg,rgba(255,255,255,.4),transparent 55%);pointer-events:none}
-.vcard__icon{font-size:1.9rem;width:58px;height:58px;display:grid;place-items:center;border-radius:18px;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),0 8px 18px -8px rgba(255,94,58,.5)}
-.vcard h3{font-size:1.3rem;margin-top:16px;color:var(--ink)}
-.vcard__desc{margin-top:9px;color:#6b4a3d;font-size:.95rem}
-.vcard__meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-.tag{
-  font-weight:600;font-size:.82rem;padding:6px 13px;border-radius:999px;
-  background:rgba(255,94,58,.12);color:var(--coral-deep);border:1px solid rgba(255,94,58,.22);
-}
-.tag--pay{background:var(--grad-coral);color:#fff;border-color:transparent}
-
-/* desktop: scatter the profession cards around the headline (Unify-style) */
+/* desktop: absolutely scatter the chips around the headline */
 @media(min-width:900px){
-  .vac__stage{min-height:78vh}
-  .vac__headline{max-width:9ch}
-  .vcard{position:absolute;margin:0}
-  .vcard--a{top:4%;right:0}
-  .vcard--b{top:37%;right:25%}
-  .vcard--c{top:63%;right:3%}
+  .chip{position:absolute}
+  .chip--1{top:13%;left:5%}
+  .chip--2{top:22%;right:7%}
+  .chip--3{top:40%;left:1%}
+  .chip--4{top:56%;right:4%}
+  .chip--5{top:70%;left:13%}
+  .chip--6{top:75%;right:19%}
+  .chip--7{top:31%;left:34%}
 }
-/* mobile: vacancies is a normal (non-pinned) stacked section */
+/* mobile: vacancies becomes a normal stacked (non-pinned) list */
 @media(max-width:899px){
   .vac__track{height:auto}
   .vac__sticky{position:static;height:auto;padding:80px 0}
-  .vac__stage{padding:0 20px}
-  .vac__headline{margin-inline:auto;text-align:center}
-  .vac__foot{text-align:center}
+  .vac__stage{height:auto}
+  .chip{margin-top:14px;opacity:1}
+  .chip:first-of-type{margin-top:28px}
 }
 
-/* ============ BOTTOM CTA ============ */
+/* ============ ACTIONS (vid4 "Add / Send / Exchange") ============
+   Vertical ticker of big coloured word-labels scrolling up through a
+   fixed centre bar, one at a time, tied to scroll. */
+.act{background:#fff}
+.act__track{position:relative;height:320vh}
+.act__sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.act__head{text-align:center;padding:34px 20px 0;position:relative;z-index:4}
+.act__head h2{font-size:clamp(1.6rem,4.4vw,2.4rem);color:var(--ink)}
+.act__head .eyebrow{margin-bottom:8px}
+.act__viewport{
+  position:relative;flex:1;min-height:0;
+  -webkit-mask:linear-gradient(180deg,transparent,#000 27%,#000 73%,transparent);
+          mask:linear-gradient(180deg,transparent,#000 27%,#000 73%,transparent);
+}
+.act__list{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:9vh;will-change:transform;padding:24vh 0}
+.word{display:flex;align-items:center;gap:.28em;font-family:'Space Grotesk';font-weight:700;letter-spacing:-.02em;font-size:clamp(2.8rem,11vw,6.4rem);line-height:1;will-change:transform,opacity}
+.word__ic{width:.86em;height:.86em;flex:none;border-radius:.22em;display:grid;place-items:center;color:#fff}
+.word__ic svg{width:.5em;height:.5em}
+.word--add{color:var(--green-ink)}   .word--add  .word__ic{background:var(--green);box-shadow:0 10px 24px -8px rgba(34,197,94,.6)}
+.word--send{color:var(--blue-ink)}   .word--send .word__ic{background:var(--blue);box-shadow:0 10px 24px -8px rgba(59,130,246,.6)}
+.word--exch{color:var(--pink-ink)}   .word--exch .word__ic{background:var(--pink);box-shadow:0 10px 24px -8px rgba(236,72,153,.6)}
+/* fixed centre UI bar */
+.act__bar{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
+  width:min(560px,86vw);height:60px;border-radius:16px;
+  background:var(--grad-coral);box-shadow:0 22px 48px -16px rgba(255,94,58,.6);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:0 10px 0 20px;color:#fff;
+}
+.act__bar .brand{display:flex;align-items:center;gap:8px;font-family:'Space Grotesk';font-weight:700;font-size:1rem}
+.act__bar .brand .diamond{color:var(--peach)}
+.act__bar .pill{font-size:.82rem;font-weight:600;padding:8px 15px;border-radius:999px;background:rgba(255,255,255,.2)}
+/* static fallback (reduced motion) — stack the words */
+.act__list.is-static{position:static;transform:none!important;padding:20px 0;gap:24px}
+.act__list.is-static .word{opacity:1!important;transform:none!important}
+
+/* ============ BOTTOM VIDEO BLOCK ============ */
 .cta{position:relative;overflow:hidden;min-height:100svh;background:var(--grad-coral)}
 .cta video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.1)}
-.cta__fallback{position:absolute;inset:0;z-index:-2;background:linear-gradient(130deg,#FF5E3A,#FF7A59,#FFC29A,#FF5E3A);background-size:300% 300%;animation:heroGrad 14s ease infinite;opacity:0;transition:opacity .4s}
+.cta__fallback{position:absolute;inset:0;z-index:0;background:linear-gradient(130deg,#FF5E3A,#FF7A59,#FFC29A,#FF5E3A);background-size:300% 300%;animation:heroGrad 14s ease infinite;opacity:0;transition:opacity .4s}
 .cta__fallback.show{opacity:1}
-.cta__scrim{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(28,14,10,.66),rgba(28,14,10,.35) 55%,rgba(28,14,10,.15))}
-.cta__grid{display:grid;gap:48px;grid-template-columns:1fr;align-items:center}
-.cta h2{font-size:clamp(2rem,6vw,3.4rem);max-width:12ch}
-.cta__sub{margin-top:18px;color:rgba(255,255,255,.9);font-size:1.1rem;max-width:44ch}
-.cta__btn{margin-top:30px}
-
-/* phone mockup */
-.phone-wrap{display:flex;justify-content:center}
-.phone{
-  position:relative;width:270px;aspect-ratio:9/19;
-  border-radius:42px;padding:12px;
-  background:linear-gradient(160deg,#2a1712,#140a07);
-  box-shadow:0 40px 80px -24px rgba(20,8,4,.7),inset 0 0 0 2px rgba(255,255,255,.08);
-  animation:float 5.5s ease-in-out infinite;
-}
-.phone::before{content:"";position:absolute;top:14px;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#140a07;border-radius:0 0 16px 16px;z-index:3}
-.phone__screen{width:100%;height:100%;border-radius:32px;overflow:hidden;background:var(--cream);position:relative}
-.phone__screen img{width:100%;height:100%;object-fit:cover}
-.phone__placeholder{
-  position:absolute;inset:0;display:flex;flex-direction:column;gap:14px;padding:52px 16px 16px;
-  background:linear-gradient(180deg,#FFF6EF,#FFE7D8);
-}
-.ph-bubble{background:#fff;border-radius:16px 16px 16px 4px;padding:12px 14px;box-shadow:0 6px 18px -8px rgba(255,94,58,.4);max-width:82%}
-.ph-bubble.me{align-self:flex-end;border-radius:16px 16px 4px 16px;background:var(--grad-coral);color:#fff}
-.ph-bubble b{font-family:'Space Grotesk';display:block;color:var(--coral-deep);font-size:.8rem;margin-bottom:2px}
-.ph-bubble.me b{color:#fff}
-.ph-bubble span{font-size:.82rem;color:#6b4a3d;line-height:1.4}
-.ph-bubble.me span{color:#fff}
-.ph-head{position:absolute;top:36px;left:0;right:0;text-align:center;font-family:'Space Grotesk';font-weight:700;color:var(--ink);font-size:.9rem;z-index:2}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+@keyframes heroGrad{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
 
 /* ============ FOOTER ============ */
 .footer{background:var(--ink);color:#fff;padding:56px 0 40px}
@@ -262,13 +234,9 @@ button{font-family:inherit}
 .footer__link:hover{color:#fff}
 .footer__bottom{margin-top:34px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);font-size:.85rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 
-/* ============ RESPONSIVE ============ */
-
-/* card hover: lift the inner box so it never clashes with the scroll-driven
-   transform on the outer .stat / .vcard element */
+/* ============ HOVER ============ */
 @media(hover:hover) and (pointer:fine){
-  .stat:hover .stat__box{transform:translateY(-6px);box-shadow:0 30px 60px -18px rgba(255,94,58,.55)}
-  .vcard:hover .vcard__box{transform:translateY(-8px);box-shadow:0 34px 66px -18px rgba(255,94,58,.6)}
+  .chip{transition:box-shadow .3s var(--ease)}
 }
 
 /* ============ REDUCED MOTION ============ */
@@ -278,10 +246,16 @@ button{font-family:inherit}
     transition-duration:.001ms!important;scroll-behavior:auto!important;
   }
   .reveal{opacity:1!important;transform:none!important}
-  .stats__stage{position:static!important;display:flex;flex-direction:column;gap:20px;align-items:center;min-height:0}
-  .stat{position:static!important;left:auto!important;top:auto!important;transform:none!important;opacity:1!important}
-  .vcard{position:static!important;transform:none!important;opacity:1!important;margin:22px auto 0}
-  .phone{animation:none!important}
+  .vac__track{height:auto}
+  .vac__sticky{position:static;height:auto;padding:70px 0}
+  .vac__stage{height:auto}
+  .chip{position:static!important;opacity:1!important;transform:none!important;margin-top:14px}
+  .act__track{height:auto}
+  .act__sticky{position:static;height:auto}
+  .act__viewport{-webkit-mask:none;mask:none;min-height:0}
+  .act__list{position:static;transform:none!important;padding:20px 0;gap:24px}
+  .word{opacity:1!important;transform:none!important}
+  .act__bar{display:none}
   .hero__scrolls{display:none}
 }
 </style>
@@ -325,90 +299,55 @@ button{font-family:inherit}
   <div class="hero__scrolls" aria-hidden="true"><span class="mouse"></span>Листай вниз</div>
 </header>
 
-<!-- ============ VACANCIES ("Вакансии на любой вкус") — Unify-style scatter + parallax ============ -->
+<!-- ============ VACANCIES (vid3 style) ============ -->
 <section class="vac" id="vacancies">
   <div class="vac__track" id="vacTrack">
     <div class="vac__sticky">
       <div class="vac__stage">
         <span class="eyebrow vac__eyebrow"><span class="dot"></span>Направления</span>
         <h2 class="vac__headline">Вакансии на любой вкус</h2>
-
-        <article class="vcard vcard--a" data-i="0">
-          <div class="vcard__box glass-coral">
-            <div class="vcard__icon">✍️</div>
-            <h3>Редактор текстов</h3>
-            <p class="vcard__desc">Вычитка и правка текстов: грамотность, стиль, структура.</p>
-            <div class="vcard__meta">
-              <span class="tag tag--pay">от 25 000 ₽</span>
-              <span class="tag">Удалённо</span>
-            </div>
-          </div>
-        </article>
-        <article class="vcard vcard--b" data-i="1">
-          <div class="vcard__box glass-coral">
-            <div class="vcard__icon">📱</div>
-            <h3>СММ-менеджер</h3>
-            <p class="vcard__desc">Ведение соцсетей: контент, посты и сторис, аналитика.</p>
-            <div class="vcard__meta">
-              <span class="tag tag--pay">от 30 000 ₽</span>
-              <span class="tag">Удалённо</span>
-            </div>
-          </div>
-        </article>
-        <article class="vcard vcard--c" data-i="2">
-          <div class="vcard__box glass-coral">
-            <div class="vcard__icon">🌐</div>
-            <h3>Перевод текстов</h3>
-            <p class="vcard__desc">Перевод статей, документов и субтитров без потери смысла.</p>
-            <div class="vcard__meta">
-              <span class="tag tag--pay">от 20 000 ₽</span>
-              <span class="tag">Удалённо</span>
-            </div>
-          </div>
-        </article>
-
         <div class="vac__foot">
           <a class="btn" href="https://t.me/MizoJobRoBot" target="_blank" rel="noopener">Смотреть все вакансии</a>
         </div>
+
+        <!-- scattered light chips -->
+        <div class="chip chip--1" data-speed="0.16"><span class="chip__ic">✍️</span><span class="chip__tx"><b>Редактор</b><small>от 25 000 ₽</small></span></div>
+        <div class="chip chip--2" data-speed="0.22"><span class="chip__ic">📱</span><span class="chip__tx"><b>СММ-менеджер</b><small>Удалённо</small></span></div>
+        <div class="chip chip--3 chip--pay" data-speed="0.12"><span class="chip__ic">🌐</span><span class="chip__tx"><b>Переводчик</b><small>от 20 000 ₽</small></span></div>
+        <div class="chip chip--4" data-speed="0.19"><span class="chip__ic">🎨</span><span class="chip__tx"><b>Дизайнер</b><small>от 35 000 ₽</small></span></div>
+        <div class="chip chip--5" data-speed="0.14"><span class="chip__ic">📝</span><span class="chip__tx"><b>Копирайтер</b><small>от 22 000 ₽</small></span></div>
+        <div class="chip chip--6" data-speed="0.24"><span class="chip__ic">💬</span><span class="chip__tx"><b>Оператор чата</b><small>Удалённо</small></span></div>
+        <div class="chip chip--7" data-speed="0.10"><span class="chip__ic">🛡️</span><span class="chip__tx"><b>Модератор</b><small>Гибкий график</small></span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ STATS ("MizoJob уже работает") — Add/Send/Exchange sequential scroll ============ -->
-<section class="stats" id="stats">
-  <div class="stats__track" id="statsTrack">
-    <div class="stats__sticky">
-      <div class="stats__head">
-        <span class="eyebrow"><span class="dot"></span>Цифры</span>
-        <h2>MizoJob уже работает</h2>
+<!-- ============ ACTIONS (vid4 style) ============ -->
+<section class="act" id="how">
+  <div class="act__track" id="actTrack">
+    <div class="act__sticky">
+      <div class="act__head">
+        <span class="eyebrow"><span class="dot"></span>Как это работает</span>
+        <h2>Три шага до новой работы</h2>
       </div>
-      <div class="stats__stage" id="statsStage">
-        <div class="stat" data-i="0">
-          <div class="stat__box glass-coral">
-            <div class="stat__badge">📥</div>
-            <div>
-              <div class="stat__num"><span class="counter" data-target="12500">0</span><span class="plus">+</span></div>
-              <div class="stat__label">Вакансий в боте</div>
-            </div>
-          </div>
+      <div class="act__viewport">
+        <div class="act__bar" aria-hidden="true">
+          <span class="brand"><span class="diamond">◆</span> MizoJob</span>
+          <span class="pill">@MizoJobRoBot</span>
         </div>
-        <div class="stat" data-i="1">
-          <div class="stat__box glass-coral">
-            <div class="stat__badge">👥</div>
-            <div>
-              <div class="stat__num"><span class="counter" data-target="48000">0</span><span class="plus">+</span></div>
-              <div class="stat__label">Пользователей бота</div>
-            </div>
+        <div class="act__list" id="actList">
+          <div class="word word--add">
+            <span class="word__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M11 4a1 1 0 0 1 2 0v7h7a1 1 0 0 1 0 2h-7v7a1 1 0 0 1-2 0v-7H4a1 1 0 0 1 0-2h7z"/></svg></span>
+            Найди
           </div>
-        </div>
-        <div class="stat" data-i="2">
-          <div class="stat__box glass-coral">
-            <div class="stat__badge">🤝</div>
-            <div>
-              <div class="stat__num"><span class="counter" data-target="9200">0</span><span class="plus">+</span></div>
-              <div class="stat__label">Трудоустроено</div>
-            </div>
+          <div class="word word--send">
+            <span class="word__ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.5 2.8 11.9c-.9.4-.9 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.6.7 1.1.3l2.7-2.2 4.9 3.6c.6.4 1.1.2 1.3-.6l3.4-15.9c.2-.9-.4-1.3-1.1-1.1Z"/></svg></span>
+            Откликнись
+          </div>
+          <div class="word word--exch">
+            <span class="word__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg></span>
+            Работай
           </div>
         </div>
       </div>
@@ -418,6 +357,7 @@ button{font-family:inherit}
 
 <!-- ============ BOTTOM VIDEO BLOCK (video1.mp4) ============ -->
 <section class="cta">
+  <div class="cta__fallback" id="ctaFallback"></div>
   <video autoplay muted loop playsinline poster="video1-poster.jpg" id="ctaVideo">
     <source src="video1.mp4" type="video/mp4">
   </video>
@@ -448,18 +388,14 @@ button{font-family:inherit}
   function guardVideo(videoId, fallbackId){
     var v = document.getElementById(videoId);
     if(!v) return;
-    // pause video entirely when reduced motion requested
     if(reduce){ try{ v.pause(); }catch(e){} }
     var f = fallbackId ? document.getElementById(fallbackId) : null;
     if(!f) return;
     function fail(){ f.classList.add('show'); }
     v.addEventListener('error', fail, true);
-    // if no data after a moment, fall back
-    setTimeout(function(){
-      if(v.readyState < 2) fail();
-    }, 2500);
+    setTimeout(function(){ if(v.readyState < 2) fail(); }, 2500);
   }
-  guardVideo('heroVideo','heroFallback');
+  guardVideo('heroVideo', null);
   guardVideo('ctaVideo','ctaFallback');
 
   /* ---- Scroll reveal ---- */
@@ -477,27 +413,6 @@ button{font-family:inherit}
     revealEls.forEach(function(el){ el.classList.add('in'); });
   }
 
-  /* ---- Counter animation (per element, runs once) ---- */
-  function formatNum(n){ return n.toLocaleString('ru-RU'); }
-  function animateCounter(c){
-    if(!c || c.dataset.done) return;
-    c.dataset.done = "1";
-    var target = parseInt(c.getAttribute('data-target'),10) || 0;
-    if(reduce){ c.textContent = formatNum(target); return; }
-    var dur = 1500, start = null;
-    function ease(t){ return 1 - Math.pow(1 - t, 3); } /* easeOutCubic */
-    function step(ts){
-      if(start===null) start = ts;
-      var p = Math.min((ts-start)/dur, 1);
-      c.textContent = formatNum(Math.round(ease(p)*target));
-      if(p<1) requestAnimationFrame(step);
-      else c.textContent = formatNum(target);
-    }
-    requestAnimationFrame(step);
-  }
-
-  function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
-  function smooth(t){ return t*t*(3 - 2*t); }
   var hasIO = 'IntersectionObserver' in window;
 
   function trackProgress(track){
@@ -506,34 +421,49 @@ button{font-family:inherit}
     return total > 0 ? Math.max(0, Math.min(1, (-rect.top)/total)) : 0;
   }
 
-  /* ---- STATS: Add / Send / Exchange — cards pass up through the centre,
-         one at a time, tied to scroll; number counts up as each lands ---- */
+  /* ---- VACANCIES (vid3): light chips fade in and drift up with parallax
+         around a big centred headline. Desktop = scattered + parallax;
+         mobile = simple staggered reveal in normal flow. ---- */
   (function(){
-    var track = document.getElementById('statsTrack');
-    var stage = document.getElementById('statsStage');
-    var cards = Array.prototype.slice.call(document.querySelectorAll('.stat'));
-    if(!cards.length) return;
-    if(reduce || !track){
-      if(stage) stage.classList.add('is-static');
-      cards.forEach(function(c){ animateCounter(c.querySelector('.counter')); });
+    var track = document.getElementById('vacTrack');
+    var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
+    if(!chips.length) return;
+    var desktop = window.matchMedia('(min-width:900px)').matches;
+
+    if(reduce || !track || !desktop){
+      if(hasIO && !reduce){
+        var io = new IntersectionObserver(function(entries){
+          entries.forEach(function(e){
+            if(e.isIntersecting){
+              var i = chips.indexOf(e.target);
+              setTimeout(function(){ e.target.style.opacity='1'; e.target.style.transform='none'; }, i*90);
+              io.unobserve(e.target);
+            }
+          });
+        }, {threshold:.15});
+        chips.forEach(function(c){
+          c.style.transition = 'opacity .6s var(--ease), transform .6s var(--ease)';
+          c.style.transform = 'translateY(40px)';
+          io.observe(c);
+        });
+      } else {
+        chips.forEach(function(c){ c.style.opacity='1'; c.style.transform='none'; });
+      }
       return;
     }
-    var n = cards.length;
-    var lastCenter = (n - 0.5) / n;
-    var half = (0.5 / n) * 1.35;
+
     var tick = false;
     function upd(){
       if(tick) return; tick = true;
       requestAnimationFrame(function(){
-        var pe = Math.min(trackProgress(track), lastCenter);   // hold last card at the end
-        var travel = window.innerHeight * 0.82;
-        cards.forEach(function(card, i){
-          var d = pe - (i + 0.5) / n;                 // <0 below centre, >0 above
-          var vis = Math.max(0, 1 - Math.abs(d) / half);
-          var e = smooth(vis);
-          card.style.opacity = e.toFixed(3);
-          card.style.transform = 'translate(-50%,-50%) translateY(' + (-d * travel).toFixed(1) + 'px) scale(' + (0.9 + 0.1*e).toFixed(3) + ')';
-          if(vis > 0.55) animateCounter(card.querySelector('.counter'));
+        var p = trackProgress(track), vh = window.innerHeight;
+        chips.forEach(function(c){
+          var sp = parseFloat(c.getAttribute('data-speed')) || 0.15;
+          var appear = Math.min(1, p/0.16);          // fade in early
+          var rise   = (1 - Math.min(1, p/0.22)) * 70; // settle into place
+          var drift  = -p * sp * vh;                 // parallax upward
+          c.style.opacity = appear.toFixed(3);
+          c.style.transform = 'translateY(' + (rise + drift).toFixed(1) + 'px)';
         });
         tick = false;
       });
@@ -543,58 +473,44 @@ button{font-family:inherit}
     upd();
   })();
 
-  /* ---- VACANCIES: big headline + profession cards that fly up and drift
-         with parallax on scroll (Jeton "Unify your finances" feel).
-         Desktop = scattered + parallax; mobile = simple staggered fly-up ---- */
+  /* ---- ACTIONS (vid4): a vertical ticker of big coloured words scrolls up
+         through a fixed centre bar, one at a time, tied to scroll. ---- */
   (function(){
-    var track = document.getElementById('vacTrack');
-    var cards = Array.prototype.slice.call(document.querySelectorAll('.vcard'));
-    if(!cards.length) return;
-    var desktop = window.matchMedia('(min-width:900px)').matches;
+    var track = document.getElementById('actTrack');
+    var list  = document.getElementById('actList');
+    var words = Array.prototype.slice.call(document.querySelectorAll('.word'));
+    if(!words.length || !list) return;
+    if(reduce || !track){ list.classList.add('is-static'); return; }
 
-    if(reduce || !track || !desktop){
-      // mobile / reduced motion -> staggered reveal via observer
-      cards.forEach(function(c){ c.style.transition = 'transform .7s var(--ease), opacity .7s var(--ease)'; });
-      if(hasIO && !reduce){
-        var io = new IntersectionObserver(function(entries){
-          entries.forEach(function(e){
-            if(e.isIntersecting){
-              var idx = cards.indexOf(e.target);
-              setTimeout(function(){ e.target.style.opacity='1'; e.target.style.transform='none'; }, idx*150);
-              io.unobserve(e.target);
-            }
-          });
-        }, {threshold:.2});
-        cards.forEach(function(c){ c.style.transform='translateY(60px)'; io.observe(c); });
-      } else {
-        cards.forEach(function(c){ c.style.opacity='1'; c.style.transform='none'; });
-      }
-      return;
+    var n = words.length, step = 1, base = 0, vpH = 0;
+    function measure(){
+      var vp = list.parentNode;                     // .act__viewport
+      vpH = vp.clientHeight;
+      var c0 = words[0].offsetTop + words[0].offsetHeight/2;
+      var c1 = words[1] ? words[1].offsetTop + words[1].offsetHeight/2 : c0 + 1;
+      base = c0; step = (c1 - c0) || 1;
     }
 
-    // desktop scroll-scrub: reveal window + continuous parallax drift
-    var revealStart = [0.02, 0.13, 0.24];
-    var speed = [0.14, 0.20, 0.09];   // parallax factor (× viewport height)
     var tick = false;
     function upd(){
       if(tick) return; tick = true;
       requestAnimationFrame(function(){
         var p = trackProgress(track);
-        var vh = window.innerHeight;
-        cards.forEach(function(card, i){
-          var local = Math.max(0, Math.min(1, (p - revealStart[i]) / 0.34));
-          var e = easeOut(local);
-          var rise = (1 - e) * 130;                    // fly up into place
-          var drift = -(p - revealStart[i]) * speed[i] * vh;   // gentle parallax upward
-          card.style.opacity = e.toFixed(3);
-          card.style.transform = 'translateY(' + (rise + drift).toFixed(1) + 'px)';
+        var idx = p * n - 0.5;                        // -0.5 .. n-0.5
+        var ty = vpH/2 - (base + idx*step);
+        list.style.transform = 'translateY(' + ty.toFixed(1) + 'px)';
+        words.forEach(function(w, i){
+          var d = Math.min(Math.abs(i - idx), 1.25);
+          var e = 1 - d/1.25;
+          w.style.opacity = (0.22 + 0.78*e).toFixed(3);
+          w.style.transform = 'scale(' + (0.82 + 0.18*e).toFixed(3) + ')';
         });
         tick = false;
       });
     }
     window.addEventListener('scroll', upd, {passive:true});
-    window.addEventListener('resize', upd);
-    upd();
+    window.addEventListener('resize', function(){ measure(); upd(); });
+    measure(); upd();
   })();
 
   /* ---- Language switcher (visual only) ---- */
