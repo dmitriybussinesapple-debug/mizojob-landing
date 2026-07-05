@@ -195,11 +195,13 @@ button{font-family:inherit}
 @media(max-width:480px){ .row{gap:15px;padding:18px 20px} .ricon{width:50px;height:50px} .rows{gap:14px} }
 
 /* ============ BOTTOM VIDEO BLOCK ============ */
-/* video1 is a 4:3 render — show it in full (no crop): full width, natural height */
-.cta{position:relative;background:var(--grad-coral);line-height:0;font-size:0}
-.cta video{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;filter:saturate(1.05)}
+/* video1 is a 4:3 render with the phone centred. Desktop shows it in full (4:3);
+   on phones it becomes a big vertical 9:16 block (centre-cropped onto the phone). */
+.cta{position:relative;background:var(--grad-coral);line-height:0;font-size:0;overflow:hidden;aspect-ratio:4/3}
+.cta video{display:block;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.05)}
 .cta__fallback{position:absolute;inset:0;z-index:0;background:linear-gradient(130deg,#FF5E3A,#FF7A59,#FFC29A,#FF5E3A);background-size:300% 300%;animation:heroGrad 14s ease infinite;opacity:0;transition:opacity .4s}
 .cta__fallback.show{opacity:1}
+@media(max-width:600px){ .cta{aspect-ratio:9/16} }
 @keyframes heroGrad{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
 
 /* ============ FOOTER ============ */
