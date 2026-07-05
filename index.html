@@ -132,79 +132,54 @@ button{font-family:inherit}
 @keyframes scrollDot{0%{opacity:0;transform:translate(-50%,0)}40%{opacity:1}80%{opacity:0;transform:translate(-50%,12px)}100%{opacity:0}}
 
 /* ============ SECTION 1 · VACANCIES (ref vids.mp4) ============
-   5 cards FLY (real translate) from far off the edges into the centre and
-   collect into a fan OVER the headline. Start = far off-screen; final
-   transform switched on by .in-view (added once by IntersectionObserver). */
-.vac{position:relative;background:#fff;overflow:hidden;
-     min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-     text-align:center;padding:90px 20px}
+   SCROLL-SCRUBBED. Tall track + sticky viewport; JS maps scroll progress
+   to each card flying from far off the edges into a fan over the headline
+   (see the SECTION 1 scene in the script — it sets the transforms). */
+.vac{position:relative;background:#fff}
+.vac__track{position:relative;height:220vh}
+.vac__sticky{position:sticky;top:0;height:100vh;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 20px}
 .vac .eyebrow{position:relative;z-index:1;margin-bottom:16px}
-.vac__headline{
-  position:relative;z-index:1;
+.vac__headline{position:relative;z-index:1;
   font-family:'Space Grotesk';font-weight:700;letter-spacing:-.03em;
-  font-size:clamp(2rem,6.4vw,3.6rem);line-height:1.05;color:var(--coral-deep);
-}
-/* cards layer, centred on the section, above the headline */
+  font-size:clamp(2rem,6.4vw,3.6rem);line-height:1.05;color:var(--coral-deep)}
+/* cards layer over the headline; JS drives .fc transforms */
 .fan{position:absolute;inset:0;z-index:3;pointer-events:none}
-.fc{
-  position:absolute;left:50%;top:50%;z-index:2;pointer-events:auto;
+.fc{position:absolute;left:50%;top:50%;z-index:2;pointer-events:auto;
   width:230px;max-width:74vw;
   display:flex;align-items:center;gap:12px;text-align:left;
   background:#fff;border:1px solid rgba(20,10,8,.06);border-radius:18px;padding:14px 16px;
   box-shadow:0 26px 54px -20px rgba(255,94,58,.55),0 4px 12px rgba(20,10,8,.07);
-  opacity:0;filter:blur(7px);will-change:transform,opacity;
-  transition:transform 1.3s cubic-bezier(.22,1,.36,1),opacity 1.1s cubic-bezier(.22,1,.36,1),filter 1.1s cubic-bezier(.22,1,.36,1);
-}
+  opacity:0;will-change:transform,opacity;
+  transform:translate(-50%,-50%) scale(.6)}
+.fc--2{z-index:5}
+.fc--4,.fc--5{z-index:4}
 .fc__ic{width:42px;height:42px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:1.25rem;background:var(--cream)}
 .fc__tx b{font-family:'Space Grotesk';font-weight:700;font-size:1rem;color:var(--ink);display:block;line-height:1.2}
 .fc__tx small{color:var(--coral-deep);font-weight:600;font-size:.82rem}
-/* START — far off screen in different directions */
-.fc--1{transform:translate(-50%,-50%) translate(-130vw,-35vh) scale(.6) rotate(0deg)}
-.fc--2{transform:translate(-50%,-50%) translate(0,-120vh)     scale(.6) rotate(0deg);z-index:5}
-.fc--3{transform:translate(-50%,-50%) translate(130vw,-35vh)  scale(.6) rotate(0deg)}
-.fc--4{transform:translate(-50%,-50%) translate(-130vw,60vh)  scale(.6) rotate(0deg);z-index:4}
-.fc--5{transform:translate(-50%,-50%) translate(130vw,60vh)   scale(.6) rotate(0deg);z-index:4}
-/* FINAL — cards land in a fan over the headline (centre card on top, last) */
-.vac.in-view .fc{opacity:1;filter:blur(0)}
-.vac.in-view .fc--1{transform:translate(-50%,-50%) translate(-150px,-42px) scale(1) rotate(-8deg);transition-delay:0s}
-.vac.in-view .fc--3{transform:translate(-50%,-50%) translate(150px,-42px)  scale(1) rotate(8deg); transition-delay:.09s}
-.vac.in-view .fc--4{transform:translate(-50%,-50%) translate(-86px,56px)   scale(1) rotate(-5deg);transition-delay:.18s}
-.vac.in-view .fc--5{transform:translate(-50%,-50%) translate(86px,56px)    scale(1) rotate(5deg); transition-delay:.27s}
-.vac.in-view .fc--2{transform:translate(-50%,-50%) translate(0,-66px)      scale(1) rotate(0deg); transition-delay:.38s}
-/* mobile: shrink the whole cluster so the fan doesn't spill off-screen */
-@media(max-width:600px){ .fan{transform:scale(.62)} .vac{min-height:86vh} }
+@media(max-width:600px){ .fan{transform:scale(.62)} }
 
 /* ============ SECTION 2 · STATS (ref vids111.mp4) ============
-   Green anchor row fades in place; blue row FLIES in from upper-left, red
-   row FLIES in from lower-right, all landing into a centred column.
-   Numbers count up. Final transform switched on by .in-view (once). */
-.act{background:#fff;padding:100px 20px}
-.act__inner{max-width:var(--maxw);margin-inline:auto}
-.act__head{text-align:center;margin-bottom:52px}
+   SCROLL-SCRUBBED. Three number rows start spread far apart vertically and
+   COLLAPSE upward into a tight column (like Add/Send/Exchange in the clip:
+   the lower words rise to meet the top one); numbers count up with scroll.
+   JS drives .row transforms (see the SECTION 2 scene in the script). */
+.act{position:relative;background:#fff}
+.act__track{position:relative;height:200vh}
+.act__sticky{position:sticky;top:0;height:100vh;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 20px}
+.act__head{text-align:center;margin-bottom:48px}
 .act__head .eyebrow{margin-bottom:8px}
 .act__head h2{font-size:clamp(1.7rem,4.6vw,2.6rem);color:var(--ink)}
-.rows{display:flex;flex-direction:column;align-items:flex-start;gap:22px;width:min(520px,92vw);margin:0 auto}
-.row{
-  display:flex;align-items:center;gap:18px;
-  opacity:0;will-change:transform,opacity;
-  transition:transform 1.3s cubic-bezier(.22,1,.36,1),opacity 1s cubic-bezier(.22,1,.36,1);
-}
-/* START — anchor only fades; the other two fly from far offsets */
-.row--top{transform:translate(-55vw,-30vh)}
-.row--anchor{transform:none}
-.row--bot{transform:translate(55vw,30vh)}
-/* FINAL — everything lands into the column */
-.act.in-view .row{opacity:1;transform:translate(0,0)}
-.act.in-view .row--anchor{transition-delay:0s}
-.act.in-view .row--top{transition-delay:.12s}
-.act.in-view .row--bot{transition-delay:.24s}
+.rows{display:flex;flex-direction:column;align-items:flex-start;gap:20px;width:min(520px,92vw)}
+.row{display:flex;align-items:center;gap:18px;opacity:0;will-change:transform,opacity}
 .ricon{width:52px;height:52px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:1.5rem;color:#fff}
 .ricon--g{background:var(--green)}
 .ricon--b{background:var(--blue)}
 .ricon--r{background:var(--pink)}
 .rtext{font-family:'Manrope';font-weight:600;color:#6b4a3d;font-size:1.05rem;line-height:1.15}
 .rtext .num{font-family:'Space Grotesk';font-weight:700;color:var(--ink);font-size:clamp(1.9rem,6vw,2.8rem);letter-spacing:-.02em;margin-right:.35em}
-@media(max-width:480px){ .act{padding:74px 16px} .row{gap:13px} .ricon{width:44px;height:44px;font-size:1.25rem} }
+@media(max-width:480px){ .row{gap:13px} .ricon{width:44px;height:44px;font-size:1.25rem} .rows{gap:16px} }
 
 /* ============ BOTTOM VIDEO BLOCK ============ */
 .cta{position:relative;overflow:hidden;min-height:100svh;background:var(--grad-coral)}
@@ -229,8 +204,8 @@ button{font-family:inherit}
     transition-duration:.001ms!important;scroll-behavior:auto!important;
   }
   .reveal{opacity:1!important;transform:none!important}
-  /* .in-view is added immediately under reduced motion; the final-state
-     rules apply with a ~0ms transition, so cards/rows just snap into place */
+  /* scroll scenes jump straight to their final frame under reduced motion
+     (makeScene calls apply(1)); nothing to scrub */
   .hero__scrolls{display:none}
 }
 </style>
@@ -274,30 +249,36 @@ button{font-family:inherit}
   <div class="hero__scrolls" aria-hidden="true"><span class="mouse"></span>Листай вниз</div>
 </header>
 
-<!-- ============ SECTION 1 · VACANCIES (ref vids.mp4) — cards fly into a fan ============ -->
+<!-- ============ SECTION 1 · VACANCIES (ref vids.mp4) — cards fly into a fan (scroll-scrubbed) ============ -->
 <section class="vac" id="vacancies">
-  <span class="eyebrow"><span class="dot"></span>Направления</span>
-  <h2 class="vac__headline">Вакансии на<br>любой вкус</h2>
-  <div class="fan" aria-hidden="true">
-    <article class="fc fc--1"><span class="fc__ic">📝</span><span class="fc__tx"><b>Редактор текстов</b><small>от 25 000 ₽</small></span></article>
-    <article class="fc fc--2"><span class="fc__ic">📱</span><span class="fc__tx"><b>СММ-менеджер</b><small>Удалённо</small></span></article>
-    <article class="fc fc--3"><span class="fc__ic">🌐</span><span class="fc__tx"><b>Переводчик</b><small>от 20 000 ₽</small></span></article>
-    <article class="fc fc--4"><span class="fc__ic">🎨</span><span class="fc__tx"><b>Дизайнер</b><small>от 35 000 ₽</small></span></article>
-    <article class="fc fc--5"><span class="fc__ic">🛒</span><span class="fc__tx"><b>WB-менеджер</b><small>от 40 000 ₽</small></span></article>
+  <div class="vac__track">
+    <div class="vac__sticky">
+      <span class="eyebrow"><span class="dot"></span>Направления</span>
+      <h2 class="vac__headline">Вакансии на<br>любой вкус</h2>
+      <div class="fan" aria-hidden="true">
+        <article class="fc fc--1"><span class="fc__ic">📝</span><span class="fc__tx"><b>Редактор текстов</b><small>от 25 000 ₽</small></span></article>
+        <article class="fc fc--2"><span class="fc__ic">📱</span><span class="fc__tx"><b>СММ-менеджер</b><small>Удалённо</small></span></article>
+        <article class="fc fc--3"><span class="fc__ic">🌐</span><span class="fc__tx"><b>Переводчик</b><small>от 20 000 ₽</small></span></article>
+        <article class="fc fc--4"><span class="fc__ic">🎨</span><span class="fc__tx"><b>Дизайнер</b><small>от 35 000 ₽</small></span></article>
+        <article class="fc fc--5"><span class="fc__ic">🛒</span><span class="fc__tx"><b>WB-менеджер</b><small>от 40 000 ₽</small></span></article>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ============ SECTION 2 · STATS (ref vids111.mp4) — rows fly into a column ============ -->
+<!-- ============ SECTION 2 · STATS (ref vids111.mp4) — rows collapse into a column (scroll-scrubbed) ============ -->
 <section class="act" id="how">
-  <div class="act__inner">
-    <div class="act__head">
-      <span class="eyebrow"><span class="dot"></span>Как это работает</span>
-      <h2>Три шага до новой работы</h2>
-    </div>
-    <div class="rows">
-      <div class="row row--top"><span class="ricon ricon--b">👥</span><span class="rtext"><span class="num" data-target="48000">0</span>пользователей бота</span></div>
-      <div class="row row--anchor"><span class="ricon ricon--g">📋</span><span class="rtext"><span class="num" data-target="12500">0</span>вакансий в боте</span></div>
-      <div class="row row--bot"><span class="ricon ricon--r">🤝</span><span class="rtext"><span class="num" data-target="9200">0</span>трудоустроено</span></div>
+  <div class="act__track">
+    <div class="act__sticky">
+      <div class="act__head">
+        <span class="eyebrow"><span class="dot"></span>Как это работает</span>
+        <h2>Три шага до новой работы</h2>
+      </div>
+      <div class="rows">
+        <div class="row"><span class="ricon ricon--b">👥</span><span class="rtext"><span class="num" data-target="48000">0</span>пользователей бота</span></div>
+        <div class="row"><span class="ricon ricon--g">📋</span><span class="rtext"><span class="num" data-target="12500">0</span>вакансий в боте</span></div>
+        <div class="row"><span class="ricon ricon--r">🤝</span><span class="rtext"><span class="num" data-target="9200">0</span>трудоустроено</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -362,41 +343,86 @@ button{font-family:inherit}
 
   var hasIO = 'IntersectionObserver' in window;
 
-  /* ---- Counter: animate a number from 0 to data-target over dur ms ---- */
-  function animateCounter(el, dur){
-    var target = parseInt(el.getAttribute('data-target'),10) || 0;
-    if(reduce){ el.textContent = target.toLocaleString('ru-RU'); return; }
-    var start = null;
-    function ease(t){ return 1 - Math.pow(1 - t, 3); }
-    function step(ts){
-      if(start===null) start = ts;
-      var p = Math.min((ts-start)/dur, 1);
-      el.textContent = Math.round(ease(p)*target).toLocaleString('ru-RU');
-      if(p<1) requestAnimationFrame(step);
-      else el.textContent = target.toLocaleString('ru-RU');
-    }
-    requestAnimationFrame(step);
-  }
+  /* ---- Scroll-scrub helpers ---- */
+  function clamp01(v){ return v<0?0:(v>1?1:v); }
+  function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
+  function fmt(n){ return n.toLocaleString('ru-RU'); }
 
-  /* ---- Add .in-view to a section once, when it scrolls into view ---- */
-  function triggerOnce(el, cb){
-    if(!el) return;
-    if(reduce || !hasIO){ el.classList.add('in-view'); if(cb) cb(); return; }
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){ el.classList.add('in-view'); if(cb) cb(); io.disconnect(); }
+  /* Map a tall track's scroll position to progress 0..1 and call apply(p)
+     on every frame while scrolling. Reduced motion -> jump straight to 1. */
+  function makeScene(track, apply){
+    if(!track) return;
+    if(reduce){ apply(1); return; }
+    var ticking = false;
+    function onScroll(){
+      if(ticking) return; ticking = true;
+      requestAnimationFrame(function(){
+        var r = track.getBoundingClientRect();
+        var total = r.height - window.innerHeight;
+        var p = total > 0 ? clamp01(-r.top/total) : (r.top <= 0 ? 1 : 0);
+        apply(p); ticking = false;
       });
-    }, {threshold:.3});
-    io.observe(el);
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', onScroll);
+    onScroll();
   }
 
-  /* ---- SECTION 1 (vids.mp4): 5 cards fly from the edges into a fan ---- */
-  triggerOnce(document.getElementById('vacancies'));
+  /* ---- SECTION 1 (vids.mp4): cards fly from the edges into a fan ---- */
+  (function(){
+    var track = document.querySelector('#vacancies .vac__track');
+    var cards = Array.prototype.slice.call(document.querySelectorAll('#vacancies .fc'));
+    if(!cards.length) return;
+    /* per card: [startX vw, startY vh, finalX px, finalY px, finalRot deg, delay] */
+    var cfg = {
+      'fc--1':[-130,-35,-150,-42,-8,0.00],
+      'fc--3':[ 130,-35, 150,-42,  8,0.08],
+      'fc--4':[-130, 60, -86, 56, -5,0.16],
+      'fc--5':[ 130, 60,  86, 56,  5,0.24],
+      'fc--2':[   0,-120,  0,-66,  0,0.34]
+    };
+    var SPAN = 0.6;
+    function apply(p){
+      var vw = window.innerWidth/100, vh = window.innerHeight/100;
+      cards.forEach(function(el){
+        var key = el.className.match(/fc--\d/)[0], c = cfg[key];
+        var e = easeOut(clamp01((p - c[5]) / SPAN));
+        var sx = c[0]*vw, sy = c[1]*vh;
+        var tx = sx + (c[2]-sx)*e, ty = sy + (c[3]-sy)*e;
+        el.style.transform = 'translate(-50%,-50%) translate('+tx.toFixed(1)+'px,'+ty.toFixed(1)+'px) scale('+(0.6+0.4*e).toFixed(3)+') rotate('+(c[4]*e).toFixed(2)+'deg)';
+        el.style.opacity = e.toFixed(3);
+        el.style.filter = 'blur('+(7*(1-e)).toFixed(2)+'px)';
+      });
+    }
+    makeScene(track, apply);
+  })();
 
-  /* ---- SECTION 2 (vids111.mp4): rows fly into a column, numbers count up ---- */
-  triggerOnce(document.getElementById('how'), function(){
-    document.querySelectorAll('#how .num').forEach(function(num){ animateCounter(num, 1200); });
-  });
+  /* ---- SECTION 2 (vids111.mp4): three rows start far apart vertically and
+         COLLAPSE up into a tight column; numbers count up with scroll ---- */
+  (function(){
+    var track = document.querySelector('#how .act__track');
+    var rows = Array.prototype.slice.call(document.querySelectorAll('#how .row'));
+    if(!rows.length) return;
+    /* per row (top->bottom): [startY vh, delay, countTarget] */
+    var cfg = [
+      [ 0, 0.00, 48000],   /* top row = anchor, only fades in */
+      [16, 0.14, 12500],   /* rises up to close the gap */
+      [34, 0.28,  9200]    /* rises up further */
+    ];
+    var SPAN = 0.62;
+    function apply(p){
+      var vh = window.innerHeight/100;
+      rows.forEach(function(el, i){
+        var c = cfg[i];
+        var e = easeOut(clamp01((p - c[1]) / SPAN));
+        el.style.transform = 'translateY('+((c[0]*vh)*(1-e)).toFixed(1)+'px)';
+        el.style.opacity = clamp01(e*1.3).toFixed(3);
+        var num = el.querySelector('.num');
+        if(num) num.textContent = fmt(Math.round(e * c[2]));
+      });
+    }
+    makeScene(track, apply);
+  })();
 
   /* ---- Language switcher (visual only) ---- */
   var langBtns = document.querySelectorAll('.lang button');
