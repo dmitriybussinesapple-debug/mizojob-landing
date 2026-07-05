@@ -112,13 +112,15 @@ button{font-family:inherit}
 .lang button.active{background:#fff;color:var(--coral-deep)}
 
 /* ============ HERO ============ */
-.hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;isolation:isolate}
+.hero{position:relative;min-height:100svh;display:flex;align-items:stretch;overflow:hidden;isolation:isolate}
 .hero__media{position:absolute;inset:0;z-index:-1;background:#1c0e0a}
 .hero__media video{width:100%;height:100%;object-fit:cover}
-.hero__inner{position:relative;padding-top:120px;padding-bottom:80px;max-width:660px}
+/* h1 sits at the top (just under the MizoJob nav); subtitle + button pushed low */
+.hero__inner{position:relative;display:flex;flex-direction:column;min-height:100svh;padding-top:90px;padding-bottom:0;max-width:660px}
 .hero h1{font-size:clamp(2.5rem,7.5vw,4.6rem);color:#fff;margin:0;text-shadow:0 2px 24px rgba(0,0,0,.35)}
-.hero__sub{color:rgba(255,255,255,.95);font-size:clamp(1.05rem,2.4vw,1.28rem);margin-top:52px;max-width:520px;text-shadow:0 1px 12px rgba(0,0,0,.4)}
-.hero__cta{margin-top:38px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.hero__lower{margin-top:auto;padding-bottom:13svh}
+.hero__sub{color:rgba(255,255,255,.95);font-size:clamp(1.05rem,2.4vw,1.28rem);margin-top:0;max-width:520px;text-shadow:0 1px 12px rgba(0,0,0,.4)}
+.hero__cta{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
 .hero .eyebrow{color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.4)}
 .nav .logo,.nav .lang{text-shadow:0 1px 10px rgba(0,0,0,.35)}
 .hero .eyebrow .dot{background:var(--peach);box-shadow:0 0 0 4px rgba(255,194,154,.25)}
@@ -146,7 +148,7 @@ button{font-family:inherit}
 /* vertical glass vacancy cards layered over the headline; JS drives transforms */
 .fan{position:absolute;inset:0;z-index:3;pointer-events:none}
 .fc{position:absolute;left:50%;top:50%;z-index:2;pointer-events:auto;
-  width:198px;max-width:70vw;
+  width:212px;max-width:74vw;
   display:flex;flex-direction:column;align-items:flex-start;gap:11px;text-align:left;
   background:linear-gradient(160deg,rgba(255,255,255,.78),rgba(255,122,89,.16));
   border:1px solid rgba(255,255,255,.85);border-radius:20px;padding:20px 18px;
@@ -164,7 +166,7 @@ button{font-family:inherit}
 /* phone: headline fills the width, cards a bit larger */
 @media(max-width:600px){
   .vac__headline{font-size:clamp(3rem,15vw,4.8rem)}
-  .fan{transform:scale(.72)}
+  .fan{transform:scale(.76)}
 }
 
 /* ============ SECTION 2 · STATS (ref vids111.mp4) ============
@@ -245,12 +247,14 @@ button{font-family:inherit}
   <div class="wrap">
     <div class="hero__inner">
       <h1 class="reveal" data-delay="1">Работа <span class="text-grad">мечты</span><br>в твоём Telegram</h1>
-      <p class="hero__sub reveal" data-delay="2">Тысячи проверенных вакансий, удобный поиск и отклик в один тап. Никаких резюме на десять страниц — просто открой бота.</p>
-      <div class="hero__cta reveal" data-delay="3">
-        <a class="btn" href="https://t.me/MizoJobRoBot" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.5 2.8 11.9c-.9.4-.9 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.6.7 1.1.3l2.7-2.2 4.9 3.6c.6.4 1.1.2 1.3-.6l3.4-15.9c.2-.9-.4-1.3-1.1-1.1Z"/></svg>
-          Начать в Telegram
-        </a>
+      <div class="hero__lower">
+        <p class="hero__sub reveal" data-delay="2">Тысячи проверенных вакансий, удобный поиск и отклик в один тап. Никаких резюме на десять страниц — просто открой бота.</p>
+        <div class="hero__cta reveal" data-delay="3">
+          <a class="btn" href="https://t.me/MizoJobRoBot" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.5 2.8 11.9c-.9.4-.9 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.6.7 1.1.3l2.7-2.2 4.9 3.6c.6.4 1.1.2 1.3-.6l3.4-15.9c.2-.9-.4-1.3-1.1-1.1Z"/></svg>
+            Начать в Telegram
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -427,8 +431,8 @@ button{font-family:inherit}
         el.style.opacity = e.toFixed(3);
         el.style.filter = 'blur('+(7*(1-e)).toFixed(2)+'px)';
       });
-      /* headline: big -> smaller (1 -> 0.6) as the cards come in */
-      if(head) head.style.transform = 'scale('+(1 - 0.4*e).toFixed(3)+')';
+      /* headline: big -> much smaller (1 -> 0.42) as the cards come in */
+      if(head) head.style.transform = 'scale('+(1 - 0.58*e).toFixed(3)+')';
     }
     makeScene(track, apply);
   })();
