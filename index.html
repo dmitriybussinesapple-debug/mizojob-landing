@@ -195,20 +195,23 @@ button{font-family:inherit}
 @media(max-width:480px){ .row{gap:15px;padding:18px 20px} .ricon{width:50px;height:50px} .rows{gap:14px} }
 
 /* ============ BOTTOM VIDEO BLOCK ============ */
-/* video1 is a 4:3 render — show the whole frame (4:3) so the phone is always
-   fully visible; heading + glass button overlaid on top. */
+/* video1 is a 4:3 render with the phone centred throughout. Desktop shows the
+   full 4:3; phones crop to a taller 3:4 (centre) so the phone reads much bigger
+   while staying fully in frame. Heading + glass button overlaid top-left. */
 .cta{position:relative;overflow:hidden;aspect-ratio:4/3;background:var(--grad-coral)}
 .cta video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.05)}
 .cta__fallback{position:absolute;inset:0;z-index:0;background:linear-gradient(130deg,#FF5E3A,#FF7A59,#FFC29A,#FF5E3A);background-size:300% 300%;animation:heroGrad 14s ease infinite;opacity:0;transition:opacity .4s}
 .cta__fallback.show{opacity:1}
-.cta__overlay{position:absolute;left:0;right:0;top:0;z-index:2;display:flex;flex-direction:column;align-items:center;padding:7% 20px 0;text-align:center;pointer-events:none}
-.cta__title{color:#fff;font-family:'Space Grotesk';font-weight:700;letter-spacing:-.02em;font-size:clamp(1.7rem,5.4vw,3rem);line-height:1.1;text-shadow:0 2px 22px rgba(0,0,0,.45)}
+.cta__overlay{position:absolute;left:0;right:0;top:0;z-index:2;display:flex;flex-direction:column;align-items:flex-start;padding:8% 24px 0;text-align:left;pointer-events:none}
+.cta__title{color:#fff;font-family:'Space Grotesk';font-weight:700;letter-spacing:-.02em;font-size:clamp(1.8rem,6vw,3rem);line-height:1.1;text-shadow:0 2px 22px rgba(0,0,0,.5)}
 .cta__btn{pointer-events:auto;margin-top:20px;display:inline-block;padding:14px 42px;border-radius:999px;
   background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);
   backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);
   color:var(--coral-deep);font-family:'Space Grotesk';font-weight:700;font-size:1.05rem;
   box-shadow:0 16px 38px -12px rgba(0,0,0,.4);transition:transform .3s var(--ease),background .3s}
 .cta__btn:hover{transform:translateY(-3px);background:rgba(255,255,255,.88)}
+/* phones: bigger, taller video (centre-cropped to 3:4) so the phone reads large */
+@media(max-width:600px){ .cta{aspect-ratio:3/4} .cta__overlay{padding:9% 22px 0} }
 @keyframes heroGrad{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
 
 /* ============ FOOTER ============ */
