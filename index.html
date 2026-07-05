@@ -131,92 +131,81 @@ button{font-family:inherit}
 .hero__scrolls .mouse::after{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:4px;height:7px;border-radius:2px;background:#fff;animation:scrollDot 1.6s var(--ease) infinite}
 @keyframes scrollDot{0%{opacity:0;transform:translate(-50%,0)}40%{opacity:1}80%{opacity:0;transform:translate(-50%,12px)}100%{opacity:0}}
 
-/* ============ VACANCIES (vid3 "Unify your finances") ============
-   White stage · big coral-red headline centred · small light chips
-   scattered around it, drifting up with parallax on scroll. */
-.vac{background:#fff}
-.vac__track{position:relative;height:340vh}
-.vac__sticky{position:sticky;top:0;height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.vac__stage{position:relative;width:100%;max-width:var(--maxw);height:100%;margin-inline:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 20px}
-.vac__eyebrow{margin-bottom:20px}
+/* ============ SECTION 1 · VACANCIES (ref vids.mp4) ============
+   5 cards fly in from the edges and collect into an overlapping fan
+   over the centred headline. Triggered once by IntersectionObserver. */
+.vac{background:#fff;position:relative;overflow:hidden;padding:110px 0}
+.vac__inner{position:relative;max-width:var(--maxw);margin-inline:auto;padding:0 20px;text-align:center}
+.vac__inner .eyebrow{margin-bottom:18px}
 .vac__headline{
-  position:relative;z-index:2;text-align:center;
+  position:relative;z-index:1;
   font-family:'Space Grotesk';font-weight:700;letter-spacing:-.03em;
-  font-size:clamp(2.6rem,9vw,6rem);line-height:.98;color:var(--coral-deep);
-  max-width:14ch;
+  font-size:clamp(2.6rem,9vw,5.4rem);line-height:1.02;color:var(--coral-deep);
 }
-.vac__foot{position:relative;z-index:3;margin-top:34px}
+/* fan stage sits over the headline */
+.fan{position:relative;width:100%;height:300px;margin-top:-30px}
+.fc{
+  position:absolute;left:50%;top:50%;z-index:2;
+  width:236px;max-width:78vw;
+  display:flex;align-items:center;gap:12px;text-align:left;
+  background:#fff;border:1px solid rgba(20,10,8,.06);border-radius:18px;padding:14px 16px;
+  box-shadow:0 26px 50px -22px rgba(255,94,58,.5),0 3px 10px rgba(20,10,8,.06);
+  opacity:0;filter:blur(6px);
+  transform:translate(-50%,-50%) translate(var(--sx),var(--sy)) scale(.6) rotate(var(--srot));
+  transition:transform 1.3s cubic-bezier(.22,1,.36,1),opacity 1.3s cubic-bezier(.22,1,.36,1),filter 1.3s cubic-bezier(.22,1,.36,1);
+  will-change:transform,opacity;
+}
+.fan.in .fc{
+  opacity:1;filter:blur(0);
+  transform:translate(-50%,-50%) translate(var(--fx),var(--fy)) scale(1) rotate(var(--rot));
+}
+.fc__ic{width:42px;height:42px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:1.25rem;background:var(--cream)}
+.fc__tx b{font-family:'Space Grotesk';font-weight:700;font-size:1rem;color:var(--ink);display:block;line-height:1.2}
+.fc__tx small{color:var(--coral-deep);font-weight:600;font-size:.82rem}
+/* final fan positions (fx,fy,rot) + start directions (sx,sy,srot) */
+.fc--1{--fx:-150px;--fy:-46px;--rot:-8deg;--sx:-440px;--sy:-40px;--srot:-14deg;z-index:2}
+.fc--2{--fx:0px;--fy:-74px;--rot:0deg;--sx:0px;--sy:-360px;--srot:6deg;z-index:5}
+.fc--3{--fx:150px;--fy:-46px;--rot:8deg;--sx:440px;--sy:-40px;--srot:14deg;z-index:2}
+.fc--4{--fx:-86px;--fy:54px;--rot:-5deg;--sx:-300px;--sy:330px;--srot:-10deg;z-index:3}
+.fc--5{--fx:86px;--fy:54px;--rot:5deg;--sx:300px;--sy:330px;--srot:10deg;z-index:3}
+/* cascade — centre-top card (fc--2) lands last, on top of the pile */
+.fan.in .fc--1{transition-delay:.00s}
+.fan.in .fc--4{transition-delay:.10s}
+.fan.in .fc--3{transition-delay:.20s}
+.fan.in .fc--5{transition-delay:.30s}
+.fan.in .fc--2{transition-delay:.42s}
+@media(max-width:760px){ .fan{transform:scale(.8);height:250px} }
+@media(max-width:480px){ .fan{transform:scale(.6)} .vac{padding:82px 0} }
 
-/* scattered light chips */
-.chip{
-  z-index:1;opacity:0;will-change:transform,opacity;
-  display:inline-flex;align-items:center;gap:11px;
-  background:#fff;border:1px solid rgba(20,10,8,.06);
-  border-radius:16px;padding:12px 16px;
-  box-shadow:0 20px 44px -22px rgba(255,94,58,.4),0 2px 8px rgba(20,10,8,.05);
-}
-.chip__ic{width:36px;height:36px;flex:none;border-radius:11px;display:grid;place-items:center;font-size:1.15rem;background:var(--cream)}
-.chip__tx b{font-family:'Space Grotesk';font-weight:700;font-size:.96rem;color:var(--ink);display:block;line-height:1.15}
-.chip__tx small{color:var(--coral-deep);font-weight:600;font-size:.8rem}
-.chip--pay{background:var(--grad-coral);border-color:transparent;box-shadow:0 20px 44px -18px rgba(255,94,58,.7)}
-.chip--pay .chip__tx b{color:#fff}
-.chip--pay .chip__ic{background:rgba(255,255,255,.25)}
-
-/* desktop: absolutely scatter the chips around the headline */
-@media(min-width:900px){
-  .chip{position:absolute}
-  .chip--1{top:13%;left:5%}
-  .chip--2{top:22%;right:7%}
-  .chip--3{top:40%;left:1%}
-  .chip--4{top:56%;right:4%}
-  .chip--5{top:70%;left:13%}
-  .chip--6{top:75%;right:19%}
-  .chip--7{top:31%;left:34%}
-}
-/* mobile: vacancies becomes a normal stacked (non-pinned) list */
-@media(max-width:899px){
-  .vac__track{height:auto}
-  .vac__sticky{position:static;height:auto;padding:80px 0}
-  .vac__stage{height:auto}
-  .chip{margin-top:14px;opacity:1}
-  .chip:first-of-type{margin-top:28px}
-}
-
-/* ============ ACTIONS (vid4 "Add / Send / Exchange") ============
-   Vertical ticker of big coloured word-labels scrolling up through a
-   fixed centre bar, one at a time, tied to scroll. */
-.act{background:#fff}
-.act__track{position:relative;height:320vh}
-.act__sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
-.act__head{text-align:center;padding:34px 20px 0;position:relative;z-index:4}
-.act__head h2{font-size:clamp(1.6rem,4.4vw,2.4rem);color:var(--ink)}
+/* ============ SECTION 2 · STATS (ref vids111.mp4) ============
+   Three bot-number rows: a centred anchor that fades in, one row flying
+   in from the top and one from the bottom; numbers count up. Triggered
+   once by IntersectionObserver. */
+.act{background:#fff;padding:100px 0}
+.act__inner{max-width:var(--maxw);margin-inline:auto;padding:0 20px}
+.act__head{text-align:center;margin-bottom:52px}
 .act__head .eyebrow{margin-bottom:8px}
-.act__viewport{
-  position:relative;flex:1;min-height:0;
-  -webkit-mask:linear-gradient(180deg,transparent,#000 27%,#000 73%,transparent);
-          mask:linear-gradient(180deg,transparent,#000 27%,#000 73%,transparent);
+.act__head h2{font-size:clamp(1.7rem,4.6vw,2.6rem);color:var(--ink)}
+.rows{display:flex;flex-direction:column;align-items:center;gap:22px}
+.row{
+  display:flex;align-items:center;gap:18px;width:min(520px,92vw);
+  opacity:0;transition:transform 1s cubic-bezier(.22,1,.36,1),opacity 1s cubic-bezier(.22,1,.36,1);
+  will-change:transform,opacity;
 }
-.act__list{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:9vh;will-change:transform;padding:24vh 0}
-.word{display:flex;align-items:center;gap:.28em;font-family:'Space Grotesk';font-weight:700;letter-spacing:-.02em;font-size:clamp(2.8rem,11vw,6.4rem);line-height:1;will-change:transform,opacity}
-.word__ic{width:.86em;height:.86em;flex:none;border-radius:.22em;display:grid;place-items:center;color:#fff}
-.word__ic svg{width:.5em;height:.5em}
-.word--add{color:var(--green-ink)}   .word--add  .word__ic{background:var(--green);box-shadow:0 10px 24px -8px rgba(34,197,94,.6)}
-.word--send{color:var(--blue-ink)}   .word--send .word__ic{background:var(--blue);box-shadow:0 10px 24px -8px rgba(59,130,246,.6)}
-.word--exch{color:var(--pink-ink)}   .word--exch .word__ic{background:var(--pink);box-shadow:0 10px 24px -8px rgba(236,72,153,.6)}
-/* fixed centre UI bar */
-.act__bar{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
-  width:min(560px,86vw);height:60px;border-radius:16px;
-  background:var(--grad-coral);box-shadow:0 22px 48px -16px rgba(255,94,58,.6);
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding:0 10px 0 20px;color:#fff;
-}
-.act__bar .brand{display:flex;align-items:center;gap:8px;font-family:'Space Grotesk';font-weight:700;font-size:1rem}
-.act__bar .brand .diamond{color:var(--peach)}
-.act__bar .pill{font-size:.82rem;font-weight:600;padding:8px 15px;border-radius:999px;background:rgba(255,255,255,.2)}
-/* static fallback (reduced motion) — stack the words */
-.act__list.is-static{position:static;transform:none!important;padding:20px 0;gap:24px}
-.act__list.is-static .word{opacity:1!important;transform:none!important}
+.row--top{transform:translate(-40px,-70px) scale(.9)}
+.row--anchor{transform:scale(.96)}
+.row--bot{transform:translate(40px,70px) scale(.9)}
+.rows.in .row{opacity:1;transform:translate(0,0) scale(1)}
+.rows.in .row--anchor{transition-delay:0s}
+.rows.in .row--top{transition-delay:.12s}
+.rows.in .row--bot{transition-delay:.24s}
+.ricon{width:52px;height:52px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:1.5rem;color:#fff}
+.ricon--g{background:var(--green)}
+.ricon--b{background:var(--blue)}
+.ricon--r{background:var(--pink)}
+.rtext{font-family:'Manrope';font-weight:600;color:#6b4a3d;font-size:1.05rem;line-height:1.15}
+.rtext .num{font-family:'Space Grotesk';font-weight:700;color:var(--ink);font-size:clamp(1.9rem,6vw,2.8rem);letter-spacing:-.02em;margin-right:.35em}
+@media(max-width:480px){ .act{padding:74px 0} .row{gap:13px} .ricon{width:44px;height:44px;font-size:1.25rem} }
 
 /* ============ BOTTOM VIDEO BLOCK ============ */
 .cta{position:relative;overflow:hidden;min-height:100svh;background:var(--grad-coral)}
@@ -234,11 +223,6 @@ button{font-family:inherit}
 .footer__link:hover{color:#fff}
 .footer__bottom{margin-top:34px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);font-size:.85rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 
-/* ============ HOVER ============ */
-@media(hover:hover) and (pointer:fine){
-  .chip{transition:box-shadow .3s var(--ease)}
-}
-
 /* ============ REDUCED MOTION ============ */
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{
@@ -246,16 +230,11 @@ button{font-family:inherit}
     transition-duration:.001ms!important;scroll-behavior:auto!important;
   }
   .reveal{opacity:1!important;transform:none!important}
-  .vac__track{height:auto}
-  .vac__sticky{position:static;height:auto;padding:70px 0}
-  .vac__stage{height:auto}
-  .chip{position:static!important;opacity:1!important;transform:none!important;margin-top:14px}
-  .act__track{height:auto}
-  .act__sticky{position:static;height:auto}
-  .act__viewport{-webkit-mask:none;mask:none;min-height:0}
-  .act__list{position:static;transform:none!important;padding:20px 0;gap:24px}
-  .word{opacity:1!important;transform:none!important}
-  .act__bar{display:none}
+  /* fan cards jump straight to their final positions */
+  .fc{opacity:1!important;filter:none!important;
+      transform:translate(-50%,-50%) translate(var(--fx),var(--fy)) rotate(var(--rot))!important}
+  /* stat rows show in place */
+  .row{opacity:1!important;transform:none!important}
   .hero__scrolls{display:none}
 }
 </style>
@@ -299,58 +278,32 @@ button{font-family:inherit}
   <div class="hero__scrolls" aria-hidden="true"><span class="mouse"></span>Листай вниз</div>
 </header>
 
-<!-- ============ VACANCIES (vid3 style) ============ -->
+<!-- ============ SECTION 1 · VACANCIES (ref vids.mp4) — cards fly into a fan ============ -->
 <section class="vac" id="vacancies">
-  <div class="vac__track" id="vacTrack">
-    <div class="vac__sticky">
-      <div class="vac__stage">
-        <span class="eyebrow vac__eyebrow"><span class="dot"></span>Направления</span>
-        <h2 class="vac__headline">Вакансии на любой вкус</h2>
-        <div class="vac__foot">
-          <a class="btn" href="https://t.me/MizoJobRoBot" target="_blank" rel="noopener">Смотреть все вакансии</a>
-        </div>
-
-        <!-- scattered light chips -->
-        <div class="chip chip--1" data-speed="0.16"><span class="chip__ic">✍️</span><span class="chip__tx"><b>Редактор</b><small>от 25 000 ₽</small></span></div>
-        <div class="chip chip--2" data-speed="0.22"><span class="chip__ic">📱</span><span class="chip__tx"><b>СММ-менеджер</b><small>Удалённо</small></span></div>
-        <div class="chip chip--3 chip--pay" data-speed="0.12"><span class="chip__ic">🌐</span><span class="chip__tx"><b>Переводчик</b><small>от 20 000 ₽</small></span></div>
-        <div class="chip chip--4" data-speed="0.19"><span class="chip__ic">🎨</span><span class="chip__tx"><b>Дизайнер</b><small>от 35 000 ₽</small></span></div>
-        <div class="chip chip--5" data-speed="0.14"><span class="chip__ic">📝</span><span class="chip__tx"><b>Копирайтер</b><small>от 22 000 ₽</small></span></div>
-        <div class="chip chip--6" data-speed="0.24"><span class="chip__ic">💬</span><span class="chip__tx"><b>Оператор чата</b><small>Удалённо</small></span></div>
-        <div class="chip chip--7" data-speed="0.10"><span class="chip__ic">🛡️</span><span class="chip__tx"><b>Модератор</b><small>Гибкий график</small></span></div>
-      </div>
+  <div class="vac__inner">
+    <span class="eyebrow"><span class="dot"></span>Направления</span>
+    <h2 class="vac__headline">Вакансии на<br>любой вкус</h2>
+    <div class="fan" id="fan">
+      <article class="fc fc--1"><span class="fc__ic">📝</span><span class="fc__tx"><b>Редактор текстов</b><small>от 25 000 ₽</small></span></article>
+      <article class="fc fc--2"><span class="fc__ic">📱</span><span class="fc__tx"><b>СММ-менеджер</b><small>Удалённо</small></span></article>
+      <article class="fc fc--3"><span class="fc__ic">🌐</span><span class="fc__tx"><b>Переводчик</b><small>от 20 000 ₽</small></span></article>
+      <article class="fc fc--4"><span class="fc__ic">🎨</span><span class="fc__tx"><b>Дизайнер</b><small>от 35 000 ₽</small></span></article>
+      <article class="fc fc--5"><span class="fc__ic">🛒</span><span class="fc__tx"><b>WB-менеджер</b><small>от 40 000 ₽</small></span></article>
     </div>
   </div>
 </section>
 
-<!-- ============ ACTIONS (vid4 style) ============ -->
+<!-- ============ SECTION 2 · STATS (ref vids111.mp4) — rows fly into a column ============ -->
 <section class="act" id="how">
-  <div class="act__track" id="actTrack">
-    <div class="act__sticky">
-      <div class="act__head">
-        <span class="eyebrow"><span class="dot"></span>Как это работает</span>
-        <h2>Три шага до новой работы</h2>
-      </div>
-      <div class="act__viewport">
-        <div class="act__bar" aria-hidden="true">
-          <span class="brand"><span class="diamond">◆</span> MizoJob</span>
-          <span class="pill">@MizoJobRoBot</span>
-        </div>
-        <div class="act__list" id="actList">
-          <div class="word word--add">
-            <span class="word__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M11 4a1 1 0 0 1 2 0v7h7a1 1 0 0 1 0 2h-7v7a1 1 0 0 1-2 0v-7H4a1 1 0 0 1 0-2h7z"/></svg></span>
-            Найди
-          </div>
-          <div class="word word--send">
-            <span class="word__ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.5 2.8 11.9c-.9.4-.9 1 0 1.3l4.9 1.5 1.9 5.9c.2.6.6.7 1.1.3l2.7-2.2 4.9 3.6c.6.4 1.1.2 1.3-.6l3.4-15.9c.2-.9-.4-1.3-1.1-1.1Z"/></svg></span>
-            Откликнись
-          </div>
-          <div class="word word--exch">
-            <span class="word__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg></span>
-            Работай
-          </div>
-        </div>
-      </div>
+  <div class="act__inner">
+    <div class="act__head">
+      <span class="eyebrow"><span class="dot"></span>Как это работает</span>
+      <h2>Три шага до новой работы</h2>
+    </div>
+    <div class="rows" id="rows">
+      <div class="row row--top"><span class="ricon ricon--b">👥</span><span class="rtext"><span class="num" data-target="48000">0</span>пользователей бота</span></div>
+      <div class="row row--anchor"><span class="ricon ricon--g">📋</span><span class="rtext"><span class="num" data-target="12500">0</span>вакансий в боте</span></div>
+      <div class="row row--bot"><span class="ricon ricon--r">🤝</span><span class="rtext"><span class="num" data-target="9200">0</span>трудоустроено</span></div>
     </div>
   </div>
 </section>
@@ -415,103 +368,44 @@ button{font-family:inherit}
 
   var hasIO = 'IntersectionObserver' in window;
 
-  function trackProgress(track){
-    var rect = track.getBoundingClientRect();
-    var total = rect.height - window.innerHeight;
-    return total > 0 ? Math.max(0, Math.min(1, (-rect.top)/total)) : 0;
+  /* ---- Counter: animate a number from 0 to data-target over dur ms ---- */
+  function animateCounter(el, dur){
+    var target = parseInt(el.getAttribute('data-target'),10) || 0;
+    if(reduce){ el.textContent = target.toLocaleString('ru-RU'); return; }
+    var start = null;
+    function ease(t){ return 1 - Math.pow(1 - t, 3); }
+    function step(ts){
+      if(start===null) start = ts;
+      var p = Math.min((ts-start)/dur, 1);
+      el.textContent = Math.round(ease(p)*target).toLocaleString('ru-RU');
+      if(p<1) requestAnimationFrame(step);
+      else el.textContent = target.toLocaleString('ru-RU');
+    }
+    requestAnimationFrame(step);
   }
 
-  /* ---- VACANCIES (vid3): light chips fade in and drift up with parallax
-         around a big centred headline. Desktop = scattered + parallax;
-         mobile = simple staggered reveal in normal flow. ---- */
-  (function(){
-    var track = document.getElementById('vacTrack');
-    var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
-    if(!chips.length) return;
-    var desktop = window.matchMedia('(min-width:900px)').matches;
-
-    if(reduce || !track || !desktop){
-      if(hasIO && !reduce){
-        var io = new IntersectionObserver(function(entries){
-          entries.forEach(function(e){
-            if(e.isIntersecting){
-              var i = chips.indexOf(e.target);
-              setTimeout(function(){ e.target.style.opacity='1'; e.target.style.transform='none'; }, i*90);
-              io.unobserve(e.target);
-            }
-          });
-        }, {threshold:.15});
-        chips.forEach(function(c){
-          c.style.transition = 'opacity .6s var(--ease), transform .6s var(--ease)';
-          c.style.transform = 'translateY(40px)';
-          io.observe(c);
-        });
-      } else {
-        chips.forEach(function(c){ c.style.opacity='1'; c.style.transform='none'; });
-      }
-      return;
-    }
-
-    var tick = false;
-    function upd(){
-      if(tick) return; tick = true;
-      requestAnimationFrame(function(){
-        var p = trackProgress(track), vh = window.innerHeight;
-        chips.forEach(function(c){
-          var sp = parseFloat(c.getAttribute('data-speed')) || 0.15;
-          var appear = Math.min(1, p/0.16);          // fade in early
-          var rise   = (1 - Math.min(1, p/0.22)) * 70; // settle into place
-          var drift  = -p * sp * vh;                 // parallax upward
-          c.style.opacity = appear.toFixed(3);
-          c.style.transform = 'translateY(' + (rise + drift).toFixed(1) + 'px)';
-        });
-        tick = false;
+  /* ---- Fire a section's animation once, when it is ~40% into view ---- */
+  function triggerOnce(el, cb){
+    if(!el) return;
+    if(reduce || !hasIO){ cb(); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ cb(); io.disconnect(); }
       });
-    }
-    window.addEventListener('scroll', upd, {passive:true});
-    window.addEventListener('resize', upd);
-    upd();
-  })();
+    }, {threshold:.4});
+    io.observe(el);
+  }
 
-  /* ---- ACTIONS (vid4): a vertical ticker of big coloured words scrolls up
-         through a fixed centre bar, one at a time, tied to scroll. ---- */
-  (function(){
-    var track = document.getElementById('actTrack');
-    var list  = document.getElementById('actList');
-    var words = Array.prototype.slice.call(document.querySelectorAll('.word'));
-    if(!words.length || !list) return;
-    if(reduce || !track){ list.classList.add('is-static'); return; }
+  /* ---- SECTION 1 (vids.mp4): 5 cards fly in and collect into a fan ---- */
+  var fan = document.getElementById('fan');
+  triggerOnce(fan, function(){ fan.classList.add('in'); });
 
-    var n = words.length, step = 1, base = 0, vpH = 0;
-    function measure(){
-      var vp = list.parentNode;                     // .act__viewport
-      vpH = vp.clientHeight;
-      var c0 = words[0].offsetTop + words[0].offsetHeight/2;
-      var c1 = words[1] ? words[1].offsetTop + words[1].offsetHeight/2 : c0 + 1;
-      base = c0; step = (c1 - c0) || 1;
-    }
-
-    var tick = false;
-    function upd(){
-      if(tick) return; tick = true;
-      requestAnimationFrame(function(){
-        var p = trackProgress(track);
-        var idx = p * n - 0.5;                        // -0.5 .. n-0.5
-        var ty = vpH/2 - (base + idx*step);
-        list.style.transform = 'translateY(' + ty.toFixed(1) + 'px)';
-        words.forEach(function(w, i){
-          var d = Math.min(Math.abs(i - idx), 1.25);
-          var e = 1 - d/1.25;
-          w.style.opacity = (0.22 + 0.78*e).toFixed(3);
-          w.style.transform = 'scale(' + (0.82 + 0.18*e).toFixed(3) + ')';
-        });
-        tick = false;
-      });
-    }
-    window.addEventListener('scroll', upd, {passive:true});
-    window.addEventListener('resize', function(){ measure(); upd(); });
-    measure(); upd();
-  })();
+  /* ---- SECTION 2 (vids111.mp4): rows fly into a column, numbers count up ---- */
+  var rows = document.getElementById('rows');
+  triggerOnce(rows, function(){
+    rows.classList.add('in');
+    document.querySelectorAll('#rows .num').forEach(function(num){ animateCounter(num, 1000); });
+  });
 
   /* ---- Language switcher (visual only) ---- */
   var langBtns = document.querySelectorAll('.lang button');
