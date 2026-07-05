@@ -116,9 +116,9 @@ button{font-family:inherit}
 .hero__media{position:absolute;inset:0;z-index:-1;background:#1c0e0a}
 .hero__media video{width:100%;height:100%;object-fit:cover}
 .hero__inner{position:relative;padding-top:120px;padding-bottom:80px;max-width:660px}
-.hero h1{font-size:clamp(2.5rem,7.5vw,4.6rem);color:#fff;margin:18px 0 0;text-shadow:0 2px 24px rgba(0,0,0,.35)}
-.hero__sub{color:rgba(255,255,255,.95);font-size:clamp(1.05rem,2.4vw,1.28rem);margin-top:22px;max-width:520px;text-shadow:0 1px 12px rgba(0,0,0,.4)}
-.hero__cta{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap}
+.hero h1{font-size:clamp(2.5rem,7.5vw,4.6rem);color:#fff;margin:0;text-shadow:0 2px 24px rgba(0,0,0,.35)}
+.hero__sub{color:rgba(255,255,255,.95);font-size:clamp(1.05rem,2.4vw,1.28rem);margin-top:52px;max-width:520px;text-shadow:0 1px 12px rgba(0,0,0,.4)}
+.hero__cta{margin-top:38px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
 .hero .eyebrow{color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.4)}
 .nav .logo,.nav .lang{text-shadow:0 1px 10px rgba(0,0,0,.35)}
 .hero .eyebrow .dot{background:var(--peach);box-shadow:0 0 0 4px rgba(255,194,154,.25)}
@@ -161,7 +161,11 @@ button{font-family:inherit}
 .fc b{font-family:'Space Grotesk';font-weight:700;font-size:1.05rem;color:var(--ink);line-height:1.15}
 .fc__desc{font-size:.82rem;color:#6b4a3d;line-height:1.4}
 .fc__pay{margin-top:2px;font-weight:700;color:var(--coral-deep);font-size:.82rem;background:rgba(255,94,58,.1);padding:5px 11px;border-radius:999px}
-@media(max-width:600px){ .fan{transform:scale(.6)} }
+/* phone: headline fills the width, cards a bit larger */
+@media(max-width:600px){
+  .vac__headline{font-size:clamp(3rem,15vw,4.8rem)}
+  .fan{transform:scale(.72)}
+}
 
 /* ============ SECTION 2 · STATS (ref vids111.mp4) ============
    SCROLL-SCRUBBED. The users plate is shown immediately; the other two start
@@ -233,7 +237,6 @@ button{font-family:inherit}
       <a class="logo" href="#top"><span class="diamond">◆</span> MizoJob</a>
       <div class="lang" role="group" aria-label="Язык">
         <button class="active" type="button">RU</button>
-        <button type="button">UA</button>
         <button type="button">EN</button>
       </div>
     </div>
@@ -241,7 +244,7 @@ button{font-family:inherit}
 
   <div class="wrap">
     <div class="hero__inner">
-      <h1 class="reveal" data-delay="1">Работа <span class="text-grad">мечты</span> — в твоём Telegram</h1>
+      <h1 class="reveal" data-delay="1">Работа <span class="text-grad">мечты</span><br>в твоём Telegram</h1>
       <p class="hero__sub reveal" data-delay="2">Тысячи проверенных вакансий, удобный поиск и отклик в один тап. Никаких резюме на десять страниц — просто открой бота.</p>
       <div class="hero__cta reveal" data-delay="3">
         <a class="btn" href="https://t.me/MizoJobRoBot" target="_blank" rel="noopener">
@@ -372,24 +375,29 @@ button{font-family:inherit}
   function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
   function fmt(n){ return n.toLocaleString('ru-RU'); }
 
-  /* Map a tall track's scroll position to progress 0..1 and call apply(p)
-     on every frame while scrolling. Reduced motion -> jump straight to 1. */
+  /* Map a tall track's scroll position to progress 0..1 and call apply(p).
+     The applied value EASES toward the scroll target, so when the user
+     flings fast the animation lags and plays out more slowly; when they
+     scroll slowly it stays ~1:1. Reduced motion -> jump straight to 1. */
   function makeScene(track, apply){
     if(!track) return;
     if(reduce){ apply(1); return; }
-    var ticking = false;
-    function onScroll(){
-      if(ticking) return; ticking = true;
-      requestAnimationFrame(function(){
-        var r = track.getBoundingClientRect();
-        var total = r.height - window.innerHeight;
-        var p = total > 0 ? clamp01(-r.top/total) : (r.top <= 0 ? 1 : 0);
-        apply(p); ticking = false;
-      });
+    var target = 0, current = 0, raf = null;
+    function readTarget(){
+      var r = track.getBoundingClientRect();
+      var total = r.height - window.innerHeight;
+      target = total > 0 ? clamp01(-r.top/total) : (r.top <= 0 ? 1 : 0);
     }
+    function loop(){
+      current += (target - current) * 0.085;   // lower = slower catch-up on fast scroll
+      if(Math.abs(target - current) < 0.0004){ current = target; apply(current); raf = null; return; }
+      apply(current);
+      raf = requestAnimationFrame(loop);
+    }
+    function onScroll(){ readTarget(); if(!raf) raf = requestAnimationFrame(loop); }
     window.addEventListener('scroll', onScroll, {passive:true});
     window.addEventListener('resize', onScroll);
-    onScroll();
+    readTarget(); current = target; apply(current);   // no lag on initial load
   }
 
   /* ---- SECTION 1 (vids.mp4): cards fly from the edges into a fan TOGETHER,
@@ -433,9 +441,9 @@ button{font-family:inherit}
     if(!rows.length) return;
     /* per row (top->bottom): [startY vh, delay, countTarget] */
     var cfg = [
-      [ 0, 0.00, 48000],   /* users — shown immediately, no fly */
-      [16, 0.10, 12500],   /* rises up to close the gap */
-      [34, 0.26,  9200]    /* rises up further */
+      [-13, 0.00, 48000],  /* users — always visible; drifts DOWN with scroll into its slot, never past 0 (so it stays above the others) */
+      [ 16, 0.10, 12500],  /* rises up to close the gap */
+      [ 34, 0.26,  9200]   /* rises up further */
     ];
     var SPAN = 0.7;
     function apply(p){
@@ -443,9 +451,10 @@ button{font-family:inherit}
       rows.forEach(function(el, i){
         var c = cfg[i];
         var num = el.querySelector('.num');
-        if(i === 0){                       /* users plate: always visible, no animation */
+        if(i === 0){   /* users plate: visible the whole time; moves with scroll but is clamped above the others */
+          var e0 = easeOut(clamp01(p / SPAN));
           el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
+          el.style.transform = 'translateY('+((c[0]*vh)*(1-e0)).toFixed(1)+'px)';
           if(num) num.textContent = fmt(c[2]);
           return;
         }
