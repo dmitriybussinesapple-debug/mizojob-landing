@@ -195,10 +195,9 @@ button{font-family:inherit}
 @media(max-width:480px){ .row{gap:15px;padding:18px 20px} .ricon{width:50px;height:50px} .rows{gap:14px} }
 
 /* ============ BOTTOM VIDEO BLOCK ============ */
-/* video1 is a 4:3 render with the phone centred throughout. Desktop shows the
-   full 4:3; phones crop to a taller 3:4 (centre) so the phone reads much bigger
-   while staying fully in frame. Heading + glass button overlaid top-left. */
-.cta{position:relative;overflow:hidden;aspect-ratio:4/3;background:var(--grad-coral)}
+/* vida.mp4 is the phone render pre-cropped ~square (1078x1118) with the phone
+   centred, so the block just matches that aspect. Heading + glass button top-left. */
+.cta{position:relative;overflow:hidden;aspect-ratio:1078/1118;background:var(--grad-coral)}
 .cta video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.05)}
 .cta__fallback{position:absolute;inset:0;z-index:0;background:linear-gradient(130deg,#FF5E3A,#FF7A59,#FFC29A,#FF5E3A);background-size:300% 300%;animation:heroGrad 14s ease infinite;opacity:0;transition:opacity .4s}
 .cta__fallback.show{opacity:1}
@@ -324,11 +323,11 @@ button{font-family:inherit}
   </div>
 </section>
 
-<!-- ============ BOTTOM VIDEO BLOCK (video1.mp4) ============ -->
+<!-- ============ BOTTOM VIDEO BLOCK (vida.mp4) ============ -->
 <section class="cta">
   <div class="cta__fallback" id="ctaFallback"></div>
   <video autoplay muted loop playsinline id="ctaVideo">
-    <source src="video1.mp4" type="video/mp4">
+    <source src="vida.mp4" type="video/mp4">
   </video>
   <div class="cta__overlay">
     <h2 class="cta__title">Все вакансии<br>в одном боте</h2>
