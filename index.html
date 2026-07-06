@@ -210,8 +210,13 @@ button{font-family:inherit}
   color:var(--coral-deep);font-family:'Space Grotesk';font-weight:700;font-size:1.05rem;
   box-shadow:0 16px 38px -12px rgba(0,0,0,.4);transition:transform .3s var(--ease),background .3s}
 .cta__btn:hover{transform:translateY(-3px);background:rgba(255,255,255,.88)}
-/* phones: bigger, taller video (centre-cropped to 3:4) so the phone reads large */
-@media(max-width:600px){ .cta{aspect-ratio:2/3} .cta__overlay{padding:8% 22px 0} }
+/* phones: bigger, taller video (2:3). The phone sits ~67% across the frame,
+   so shift the crop right (object-position 84%) to centre it. */
+@media(max-width:600px){
+  .cta{aspect-ratio:2/3}
+  .cta video{object-position:84% center}
+  .cta__overlay{padding:8% 22px 0}
+}
 @keyframes heroGrad{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
 
 /* ============ FOOTER ============ */
